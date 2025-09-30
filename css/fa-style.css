@@ -1,0 +1,80 @@
+body {
+  font-family: Tahoma, sans-serif;
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+}
+
+/* زر القسم */
+.accordion {
+  cursor: pointer;
+  padding: 15px;
+  width: 100%;
+  border: none;
+  text-align: right;
+  outline: none;
+  font-size: 18px;
+  transition: background 0.3s;
+  border-bottom: 1px solid #ddd;
+  color: #040251;
+  position: relative;
+  font-weight: bold; 
+}
+
+/* أيقونة + / - */
+.accordion::after {
+  content: "+";
+  font-weight: bold;
+  position: absolute;
+  left: 20px;
+  transition: transform 0.3s;
+}
+.accordion.active::after {
+  content: "-";
+}
+
+/* خلفيات ملونة */
+.accordion:nth-of-type(1) { background-color: #e4e9e7; } /* أزرق */
+.accordion:nth-of-type(2) { background-color: #ffffff; } /* أخضر */
+.accordion:nth-of-type(3) { background-color: #e4e9e7; } /* أزرق */
+.accordion:nth-of-type(4) { background-color: #ffffff; } /* أخضر */
+.accordion:nth-of-type(5) { background-color: #e4e9e7; } /* أزرق */
+.accordion:nth-of-type(6) { background-color: #ffffff; } /* أخضر */
+
+.accordion:hover {
+  filter: brightness(90%);
+}
+
+/* محتوى القسم */
+.panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  background: white;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  opacity: 0;
+}
+
+.panel.show {
+  opacity: 1;
+  transition: max-height 0.5s ease, opacity 0.5s ease-in;
+}
+
+.panel p {
+  margin: 15px 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 600px) {
+  .accordion {
+    font-size: 16px;
+    padding: 12px;
+  }
+  .panel p {
+    font-size: 14px;
+  }
+}
