@@ -41,7 +41,9 @@ body {
 .accordion:nth-of-type(4) { background-color: #ffffff; } /* أخضر */
 .accordion:nth-of-type(5) { background-color: #e4e9e7; } /* أزرق */
 .accordion:nth-of-type(6) { background-color: #ffffff; } /* أخضر */
-
+.accordion:nth-of-type(7) { background-color: #e4e9e7; } /* أزرق */
+.accordion:nth-of-type(8) { background-color: #ffffff; } /* أخضر */
+.accordion:nth-of-type(9) { background-color: #e4e9e7; } /* أزرق */
 .accordion:hover {
   filter: brightness(90%);
 }
@@ -80,5 +82,6 @@ body {
     font-weight: bold;
   }
 }
+
 
 
