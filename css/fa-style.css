@@ -1,5 +1,5 @@
 body {
-  font-family: Cairo;
+  font-family: Tajawal, sans-serif;
   direction: rtl;
   margin: 0;
   padding: 0;
@@ -82,6 +82,7 @@ body {
     font-weight: bold;
   }
 }
+
 
 
 
