@@ -9,31 +9,26 @@
       font-family: Arial, sans-serif;
       direction: rtl;
       text-align: center;
-      margin: 0;
-      padding: 20px;
       background: #f2f2f2;
+      padding: 20px;
     }
-    h2 {
-      margin-bottom: 20px;
-    }
-    .box {margin: 10px; padding: 10px;}
+    h2 { margin-bottom: 20px; }
     .search-container {
       display: inline-flex;
       align-items: center;
       border: 1px solid #ccc;
       border-radius: 6px;
-      overflow: hidden;
       background: #fff;
-      width: 100%;
       max-width: 400px;
+      width: 100%;
     }
     input {
       padding: 10px;
       flex: 1;
       border: none;
       outline: none;
-      text-align: center;
       font-size: 16px;
+      text-align: center;
     }
     .clear-btn {
       background: #eee;
@@ -42,47 +37,42 @@
       cursor: pointer;
       font-size: 18px;
     }
-    .clear-btn:hover { background: #ddd; }
-    #result {
-      margin-top: 20px;
-      font-weight: bold;
-      white-space: pre-line;
-      display: none;
-    }
+    #result { margin-top: 20px; display: none; }
     .student {
+      background: #fff;
       padding: 12px;
       border: 1px solid #ccc;
       margin: 8px auto;
-      width: 100%;
-      max-width: 400px;
       border-radius: 8px;
-      background: #fff;
-      text-align: right;
+      max-width: 400px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: right;
     }
-    .student div {margin: 6px 0;}
     .name {color: #0056b3; font-size: 18px;}
     .num {color: #b50c0c; font-size: 18px;}
-    .deger {color: #0b8d2a; font-weight: bold; font-size: 17px;}
-
-    /* تصغير على الموبايل */
-    @media (max-width: 480px) {
-      input {font-size: 14px; padding: 8px;}
-      .name {font-size: 16px;}
-      .deger {font-size: 15px;}
+    .deger { color: #0b8d2a; font-weight: bold; }
+    .pdf-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #0056b3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
+    .pdf-btn:hover { background: #004099; }
   </style>
 </head>
 <body>
 
   <h2>البحث عن حوالة مستفيد</h2>
 
-  <div class="box">
-    <div class="search-container">
-      <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم للبحث">
-      <button class="clear-btn" onclick="clearSearch()">❌</button>
-    </div>
+ <div class="search-container">
+    <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم">
+    <button class="clear-btn" onclick="clearSearch()">❌</button>
   </div>
+
+
 
   <div id="result"></div>
 
@@ -90,7 +80,7 @@
     let students = [];
 
     // رابط ملف CSV (عدّل الرابط لملفك الحقيقي)
-    const csvUrl = "csv/transinfo.csv";
+    const csvUrl = "https://raw.githubusercontent.com/falahsab/jdwel/refs/heads/master/Book1.csv";
 
     // تحميل ملف CSV
     fetch(csvUrl)
@@ -158,5 +148,4 @@
 
 </body>
 </html>
-
 
