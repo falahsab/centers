@@ -3,20 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <title>حوالات</title>
+  <img src="img/Yamaan-ye.png" alt="يمان-حوالات">
   <style>
     body {font-family: Arial, sans-serif; direction: rtl; text-align: center;}
     .box {margin: 10px; padding: 10px;}
-    input {padding: 8px; margin: 5px; width: 250px; text-align: center;}
-    #result {margin-top: 20px; font-weight: bold; white-space: pre-line; display: none;}
-    .student {padding: 10px; border: 1px solid #ccc; margin: 5px auto; width: 300px; border-radius: 8px; background: #f9f9f9;text-align: right;}
+    .search-container {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    input {
+      padding: 8px;
+      width: 230px;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+    .clear-btn {
+      background: #eee;
+      border: none;
+      padding: 0 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .clear-btn:hover { background: #ddd; }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      white-space: pre-line;
+      display: none;
+    }
+    .student {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin: 5px auto;
+      width: 320px;
+      border-radius: 8px;
+      background: #f9f9f9;
+      text-align: right;
+    }
+    .student div {margin: 5px 0;}
+    .icon {margin-left: 6px;}
+    .name {color: #0056b3; font-size: 18px;}
+    .num {color: #b50c0c; font-size: 18px;}
+
   </style>
 </head>
 <body>
-<img src="img/Yamaan-ye.png" alt="يمان-حوالات">
+
   <h2>البحث عن حوالة مستفيد</h2>
 
   <div class="box">
-    <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم للبحث">
+    <div class="search-container">
+      <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم للبحث">
+      <button class="clear-btn" onclick="clearSearch()">❌</button>
+    </div>
   </div>
 
   <div id="result"></div>
@@ -55,7 +98,7 @@
       let res = document.getElementById("result");
 
       if (keyword === "") {
-        res.style.display = "none"; // يخفي النتائج إذا خانة البحث فاضية
+        res.style.display = "none"; 
         return;
       }
 
@@ -64,7 +107,7 @@
         s.num.includes(keyword)
       );
 
-      res.style.display = "block"; // يظهر الصندوق فقط عند وجود كتابة
+      res.style.display = "block"; 
       showResults(matches);
     });
 
@@ -73,20 +116,23 @@
       if (list.length > 0) {
         res.innerHTML = list.map(s => 
           `<div class="student">
-             الاسم: ${s.name}<br>
-             الحوالة: ${s.num}<br>
-             المبلغ: ${s.deger}
+             <div class="name">👤 الاســـــــــــم: ${s.name}</div>
+             <div>📱 رقـم الجوال: ${s.num}</div>
+             <div class="num">🔢 رقم الحوالة: ${s.deger}</div>
+             <div>💰 المبــــــــــلغ: ${s.deger}</div>
            </div>`
         ).join("");
       } else {
         res.innerHTML = "لا توجد نتائج مطابقة.";
       }
     }
+
+    // زر مسح البحث
+    function clearSearch() {
+      document.getElementById("searchName").value = "";
+      document.getElementById("result").style.display = "none";
+    }
   </script>
 
 </body>
 </html>
-
-
-
-
