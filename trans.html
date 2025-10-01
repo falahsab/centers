@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>بحث عن الطالب</title>
+  <style>
+    body {font-family: Arial, sans-serif; direction: rtl; text-align: center;}
+    .box {margin: 10px; padding: 10px;}
+    input {padding: 8px; margin: 5px; width: 250px; text-align: center;}
+    #result {margin-top: 20px; font-weight: bold; white-space: pre-line; display: none;}
+    .student {padding: 10px; border: 1px solid #ccc; margin: 5px auto; width: 300px; border-radius: 8px; background: #f9f9f9;}
+  </style>
+</head>
+<body>
+
+  <h2>البحث عن حوالة المستفيد</h2>
+
+  <div class="box">
+    <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم للبحث">
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    let students = [];
+
+    // رابط ملف CSV (عدّل الرابط لملفك الحقيقي)
+    const csvUrl = "https://raw.githubusercontent.com/falahsab/jdwel/refs/heads/master/Book1.csv";
+
+    // تحميل ملف CSV
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(text => {
+        students = parseCSV(text);
+      });
+
+    // تحويل CSV إلى Array
+    function parseCSV(text) {
+      let lines = text.trim().split("\n");
+      let headers = lines[0].split(",");
+      let data = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        let values = lines[i].split(",");
+        let obj = {};
+        headers.forEach((h, j) => obj[h.trim()] = values[j]?.trim() || "");
+        data.push(obj);
+      }
+      return data;
+    }
+
+    // البحث أثناء الكتابة
+    document.getElementById("searchName").addEventListener("input", function() {
+      let keyword = this.value.trim().toLowerCase();
+      let res = document.getElementById("result");
+
+      if (keyword === "") {
+        res.style.display = "none"; // يخفي النتائج إذا خانة البحث فاضية
+        return;
+      }
+
+      let matches = students.filter(s => 
+        s.name.toLowerCase().includes(keyword) || 
+        s.num.includes(keyword)
+      );
+
+      res.style.display = "block"; // يظهر الصندوق فقط عند وجود كتابة
+      showResults(matches);
+    });
+
+    function showResults(list) {
+      let res = document.getElementById("result");
+      if (list.length > 0) {
+        res.innerHTML = list.map(s => 
+          `<div class="student">
+             الاسم: ${s.name}<br>
+             الحوالة: ${s.num}<br>
+             المبلغ: ${s.deger}
+           </div>`
+        ).join("");
+      } else {
+        res.innerHTML = "لا توجد نتائج مطابقة.";
+      }
+    }
+  </script>
+
+</body>
+</html>
