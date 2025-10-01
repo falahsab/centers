@@ -1,0 +1,113 @@
+!DOCTYPE html
+html lang=ar
+head
+meta charset=UTF-8
+meta name=viewport content=width=device-width, initial-scale=1.0
+titleتبويبات أفقية من اليمينtitle
+style
+body {
+  font-family Arial, sans-serif;
+  margin 0;
+  direction rtl;  لضبط التبويبات من اليمين 
+}
+
+ حاوية التبويبات 
+.tab {
+  display flex;
+  justify-content flex-start;  العناصر تبدأ من اليمين بسبب direction rtl 
+  border-bottom 3px solid #ccc;
+  background linear-gradient(to left, #4CAF50, #81C784);  ألوان جذابة 
+  overflow-x auto;
+}
+
+ أزرار التبويبات 
+.tab button {
+  background-color transparent;
+  border none;
+  outline none;
+  padding 14px 20px;
+  cursor pointer;
+  font-size 16px;
+  color white;
+  transition 0.3s;
+  flex none;
+  display flex;
+  align-items center;
+  gap 8px;
+}
+
+.tab buttonhover {
+  background-color rgba(255,255,255,0.2);
+  border-radius 5px 5px 0 0;
+}
+
+.tab button.active {
+  background-color white;
+  color #333;
+  font-weight bold;
+  border-radius 5px 5px 0 0;
+}
+
+ مساحة المحتوى 
+.tabcontent {
+  width 100%;
+  height 600px;  يمكن تعديل الارتفاع 
+  border 1px solid #ccc;
+  border-top none;
+}
+
+.tabcontent iframe {
+  width 100%;
+  height 100%;
+  border none;
+}
+
+ أيقونات داخل الزر 
+.tab button span.icon {
+  font-size 18px;
+}
+style
+head
+body
+
+h2 style=text-aligncenter;تبويبات أفقية من اليمين مع أيقوناتh2
+
+!-- التبويبات --
+div class=tab
+  button class=tablinks active onclick=openTab(event, 'httpsfalahsab.github.iocenters')
+    span class=icon🏠span الرئيسية
+  button
+  button class=tablinks onclick=openTab(event, 'httpsexample.org')
+    span class=iconℹ️span حول
+  button
+  button class=tablinks onclick=openTab(event, 'httpsexample.net')
+    span class=icon✉️span تواصل معنا
+  button
+  button class=tablinks onclick=openTab(event, 'httpsexample.edu')
+    span class=icon💼span خدماتنا
+  button
+div
+
+!-- المحتوى --
+div class=tabcontent
+  iframe id=tabframe src=httpsexample.comiframe
+div
+
+script
+function openTab(evt, url) {
+   تغيير رابط iframe
+  document.getElementById(tabframe).src = url;
+
+   إزالة active من جميع الأزرار
+  var tablinks = document.getElementsByClassName(tablinks);
+  for (var i = 0; i  tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace( active, );
+  }
+
+   إضافة active للزر الحالي
+  evt.currentTarget.className +=  active;
+}
+script
+
+body
+html
