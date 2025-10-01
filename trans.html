@@ -37,19 +37,26 @@
       display: none;
     }
     .student {
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ccc;
-      margin: 5px auto;
-      width: 320px;
+      margin: 8px auto;
+      width: 100%;
+      max-width: 400px;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: #fff;
       text-align: right;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .student div {margin: 5px 0;}
     .icon {margin-left: 6px;}
     .name {color: #0056b3; font-size: 18px;}
     .num {color: #b50c0c; font-size: 18px;}
-
+    /* تصغير على الموبايل */
+    @media (max-width: 480px) {
+      input {font-size: 14px; padding: 8px;}
+      .name {font-size: 16px;}
+      .deger {font-size: 15px;}
+    }
   </style>
 </head>
 <body>
@@ -137,4 +144,5 @@
 
 </body>
 </html>
+
 
