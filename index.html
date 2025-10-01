@@ -64,49 +64,13 @@
 <div class="panel">
   <div>المرافق التي تتبع القسائم في إب (IHRP 2)</div><div><br /></div><div><span style="color: red;"><b>مديرية العدين :</b></span></div><div>- المركز الصحي الجبلين&nbsp;</div><div>- المركز الصحي بلاد المليكي&nbsp;</div><div>- المركز الصحي قصل&nbsp;</div><div>- الوحدة الصحية الكريف&nbsp;</div><div>- المركز الصحي الرئاس&nbsp;</div><div>- مستشفى العدين&nbsp;</div><div>- الوحدة الصحية بني عبدالله&nbsp;</div><div>- الوحدة الصحية الجمجام</div><div>- الوحدة الصحية الكراب&nbsp;</div><div>- الوحدة الصحية وادي بني عبدالله&nbsp;</div><div>- الوحدة الصحية قصع / حليان&nbsp;</div><div>- المركز الصحي العمارنة&nbsp;</div><div>- الوحدة الصحية ذي معيد&nbsp;</div><div><br /></div><div><span style="color: red;"><b>مديرية جبلة :</b></span></div><div>- المركز الصحي السرايم&nbsp;</div><div>- مستفشى&nbsp; جبلة الجامعي&nbsp;</div><div>- المركز الصحي الأصابح&nbsp;</div><div>- الوحدة الصحية الشراعي&nbsp;</div><div><br /></div>
 </div>
-<script>
-const accordions = document.querySelectorAll(".accordion");
-const panels = document.querySelectorAll(".panel");
 
-accordions.forEach((accordion, index) => {
-  accordion.addEventListener("click", () => {
-    accordions.forEach((acc, i) => {
-      if (i === index) {
-        acc.classList.toggle("active");
-      } else {
-        acc.classList.remove("active");
-      }
-    });
-
-    panels.forEach((panel, i) => {
-      if (i === index) {
-        if (panel.style.maxHeight) {
-          panel.style.maxHeight = null;
-          panel.classList.remove("show");
-        } else {
-          panel.style.maxHeight = panel.scrollHeight + "px";
-          panel.classList.add("show");
-        }
-      } else {
-        panel.style.maxHeight = null;
-        panel.classList.remove("show");
-      }
-    });
-  });
-});
-
-// عند الضغط على المحتوى نفسه يغلق
-panels.forEach(panel => {
-  panel.addEventListener("click", () => {
-    panel.style.maxHeight = null;
-    panel.classList.remove("show");
-    accordions.forEach(acc => acc.classList.remove("active"));
-  });
-});
-</script>
+<!-- load JS files -->     
+<script src="js/bootstrap.min.js"></script> 
 
 </body>
 </html>
+
 
 
 
