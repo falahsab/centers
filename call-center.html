@@ -14,7 +14,7 @@ body {
 /* حاوية التبويبات */
 .tab {
   display: flex;
-  justify-content: flex-start; /* العناصر تبدأ من اليمين بسبب direction: rtl */
+  justify-content: flex-start;
   border-bottom: 3px solid #ccc;
   background: linear-gradient(to left, #4CAF50, #81C784); /* ألوان جذابة */
   overflow-x: auto;
@@ -62,29 +62,26 @@ body {
   border: none;
 }
 
-/* أيقونات داخل الزر */
+/* أيقونات */
 .tab button span.icon {
   font-size: 18px;
 }
 </style>
 </head>
 <body>
-<h2 style="text-align:center;">تبويبات أفقية من اليمين مع أيقونات</h2>
-
 <!-- التبويبات -->
 <div class="tab">
-  <button class="tablinks active" onclick="openTab(event, 'index.html')">
+ <button class="tablinks active" onclick="openTab(event, 'index.html')">
     <span class="icon">🏠</span> المراكز
   </button>
   <button class="tablinks" onclick="openTab(event, 'trans.html')">
     <span class="icon">ℹ️</span> حوالات
   </button>
-
 </div>
 
 <!-- المحتوى -->
 <div class="tabcontent">
-  <iframe id="tabframe" src="https://example.com"></iframe>
+  <iframe id="tabframe"></iframe>
 </div>
 
 <script>
@@ -101,9 +98,12 @@ function openTab(evt, url) {
   // إضافة active للزر الحالي
   evt.currentTarget.className += " active";
 }
+
+// تشغيل أول تبويب عند تحميل الصفحة
+window.onload = function() {
+  document.getElementsByClassName("tablinks")[0].click();
+};
 </script>
 
 </body>
 </html>
-
-
