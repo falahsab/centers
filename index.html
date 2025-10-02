@@ -2,21 +2,36 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+    <meta property="og:title" content="كول سنتر">
+    <meta property="og:description" content="بنقرة احصل على المعلومة">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تبويبات أفقية من اليمين</title>
+<title>Call-Center</title>
 <style>
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  direction: rtl; /* لضبط التبويبات من اليمين */
+  direction: rtl;
 }
 
-/* حاوية التبويبات */
+/* حاوية اللوجو */
+.logo {
+  text-align: center;
+  background: #f9f9f9;
+  padding: 15px;
+}
+.logo img {
+  height: 60px; /* حجم مناسب */
+}
+
+/* شريط التبويبات */
 .tab {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   border-bottom: 3px solid #ccc;
-  background: linear-gradient(to left, #4CAF50, #81C784); /* ألوان جذابة */
+  background: linear-gradient(to left, #4CAF50, #81C784);
+  position: sticky; /* يثبت عند التمرير */
+  top: 0;
+  z-index: 1000;
   overflow-x: auto;
 }
 
@@ -51,7 +66,7 @@ body {
 /* مساحة المحتوى */
 .tabcontent {
   width: 100%;
-  height: 600px; /* يمكن تعديل الارتفاع */
+  height: 600px; /* يمكن تعديله */
   border: 1px solid #ccc;
   border-top: none;
 }
@@ -69,16 +84,21 @@ body {
 </style>
 </head>
 <body>
- <center></center>   <img src="img/Yamaan-ye.png" alt="يمان-حوالات"></center>
-<!-- التبويبات -->
-<div class="tab">
 
+<!-- اللوجو -->
+<div class="logo">
+  <img src="https://github.com/falahsab/centers/blob/main/img/Yamaan-ye.png?raw=true" alt="شعار الموقع">
+</div>
+
+<!-- شريط التبويبات -->
+<div class="tab">
  <button class="tablinks active" onclick="openTab(event, 'centers.html')">
     <span class="icon">🏠</span> المراكز
   </button>
   <button class="tablinks" onclick="openTab(event, 'trans.html')">
     <span class="icon">ℹ️</span> حوالات
   </button>
+</div>
 </div>
 
 <!-- المحتوى -->
@@ -109,5 +129,3 @@ window.onload = function() {
 
 </body>
 </html>
-
-
