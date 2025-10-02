@@ -3,7 +3,7 @@
       direction: rtl;
       text-align: center;
       background: #f2f2f2;
-      padding: 20px;
+     
     }
     h2 { margin-bottom: 20px; }
     .search-container {
@@ -54,4 +54,5 @@
       cursor: pointer;
     }
     .pdf-btn:hover { background: #004099; }
+
 
