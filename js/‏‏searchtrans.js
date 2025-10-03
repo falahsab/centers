@@ -49,7 +49,7 @@
       if (list.length > 0) {
         res.innerHTML = list.map(s => 
           `<div class="student">
-             <div class="name">👤 الاســـــــــــم: ${s.name}</div>
+             <div class="name">👤 الاســــــــم: ${s.name}</div>
              <div>📱 رقـم الجوال: ${s.mob}</div>
              <div class="num">🔢 رقم الحوالة: ${s.num}</div>
              <div>💰 المبــــــــــلغ: ${s.deger}</div>
