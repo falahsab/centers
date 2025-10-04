@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وجه ودود تفاعلي</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #000; /* الخلفية سوداء */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .face {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    background: #ffe066;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  /* العيون */
+  .eye {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+
+  .eye.left { left: 50px; top: 70px; }
+  .eye.right { right: 50px; top: 70px; }
+
+  .pupil {
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border-radius: 50%;
+    transition: all 0.05s;
+    position: relative;
+  }
+
+  /* الحواجب */
+  .eyebrow {
+    position: absolute;
+    width: 40px;
+    height: 10px;
+    background: #333;
+    border-radius: 5px;
+    top: 50px;
+    transition: transform 0.2s;
+  }
+
+  .eyebrow.left { left: 50px; transform: rotate(-10deg); }
+  .eyebrow.right { right: 50px; transform: rotate(10deg); }
+
+  /* الابتسامة */
+  .mouth {
+    position: absolute;
+    bottom: 50px;
+    width: 120px;
+    height: 60px;
+    border-bottom: 5px solid #333;
+    border-radius: 0 0 60px 60px;
+    background: transparent;
+    transition: transform 0.2s;
+  }
+
+  /* الخدود الوردية */
+  .blush {
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    background: #ff7b7b;
+    border-radius: 50%;
+    bottom: 80px;
+    opacity: 0.7;
+    transition: all 0.2s;
+  }
+
+  .blush.left { left: 30px; }
+  .blush.right { right: 30px; }
+
+  /* الرسالة */
+  .message {
+    position: absolute;
+    top: -50px;
+    background: #fff;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    display: none;
+    font-size: 20px; /* حجم أكبر للرسالة */
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <div class="face" id="face">
+    <div class="message" id="message">مرحبًا! 😊</div>
+
+    <!-- الحواجب -->
+    <div class="eyebrow left"></div>
+    <div class="eyebrow right"></div>
+
+    <!-- العيون -->
+    <div class="eye left"><div class="pupil"></div></div>
+    <div class="eye right"><div class="pupil"></div></div>
+
+    <!-- الابتسامة -->
+    <div class="mouth"></div>
+
+    <!-- الخدود -->
+    <div class="blush left"></div>
+    <div class="blush right"></div>
+  </div>
+
+<script>
+  const eyes = document.querySelectorAll('.eye .pupil');
+  const face = document.getElementById('face');
+  const message = document.getElementById('message');
+  const mouth = document.querySelector('.mouth');
+  const eyebrows = document.querySelectorAll('.eyebrow');
+  const blushes = document.querySelectorAll('.blush');
+
+  // حركة العينين مع الماوس
+  document.addEventListener('mousemove', e => {
+    eyes.forEach(eye => {
+      const rect = eye.parentElement.getBoundingClientRect();
+      const eyeCenterX = rect.left + rect.width / 2;
+      const eyeCenterY = rect.top + rect.height / 2;
+
+      const deltaX = e.clientX - eyeCenterX;
+      const deltaY = e.clientY - eyeCenterY;
+
+      const angle = Math.atan2(deltaY, deltaX);
+      const radius = 10; // مدى حركة الحدقة
+
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+
+      eye.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  });
+
+  // تفاعل الوجه عند المرور عليه
+  face.addEventListener('mouseenter', () => {
+    message.style.display = 'block';
+    // حركة طفيفة للابتسامة والحواجب
+    mouth.style.transform = 'scaleY(1.2)';
+    eyebrows[0].style.transform = 'rotate(-20deg)';
+    eyebrows[1].style.transform = 'rotate(20deg)';
+    face.style.transform = 'scale(1.05)';
+    // زيادة احمرار الخدود
+    blushes.forEach(blush => {
+      blush.style.opacity = 1;
+      blush.style.transform = 'scale(1.2)';
+    });
+  });
+
+  face.addEventListener('mouseleave', () => {
+    message.style.display = 'none';
+    // إعادة الابتسامة والحواجب للوضع الطبيعي
+    mouth.style.transform = 'scaleY(1)';
+    eyebrows[0].style.transform = 'rotate(-10deg)';
+    eyebrows[1].style.transform = 'rotate(10deg)';
+    face.style.transform = 'scale(1)';
+    // إعادة الخدود للوضع الطبيعي
+    blushes.forEach(blush => {
+      blush.style.opacity = 0.7;
+      blush.style.transform = 'scale(1)';
+    });
+  });
+</script>
+</body>
+</html>
