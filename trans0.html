@@ -92,6 +92,52 @@ button#clearBtn:hover {
   .name { font-size: 16px; }
   .num { font-size: 16px; }
 }
+  .search-container {
+  display: flex;
+  flex-wrap: nowrap;  /* اجعل العناصر في صف واحد */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input#search {
+  flex: 1 1 auto;
+  max-width: 400px;
+  padding: 12px 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+button#clearBtn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #ff4d4f;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button#clearBtn:hover {
+  background: #d9363e;
+}
+
+/* تحسين تجربة الجوال */
+@media (max-width: 480px) {
+  input#search {
+    font-size: 16px;
+    padding: 10px;
+  }
+  button#clearBtn {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -100,8 +146,9 @@ button#clearBtn:hover {
 
 <div class="search-container">
   <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
-  <button id="clearBtn">مسح البحث</button>
+  <button id="clearBtn">✖ مسح</button>
 </div>
+
 
 <div id="output">⏳ جارٍ تحميل البيانات...</div>
 
@@ -179,5 +226,6 @@ document.getElementById("clearBtn").addEventListener("click", function(){
 
 </body>
 </html>
+
 
 
