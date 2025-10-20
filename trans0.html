@@ -140,10 +140,10 @@ document.getElementById("search").addEventListener("input", function(){
   const out = document.getElementById("output");
   if (k === "") { out.innerHTML = ""; return; }
 
-  const matches = rows.filter(r =>
-    (r.name && r.name.toLowerCase().includes(k)) ||
-    (r.mob && r.mob.includes(k))
-  );
+const matches = rows.filter(r =>
+  (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
+  (r.mob && r.mob.includes(k))
+);
 
   if (matches.length > 0){
     out.innerHTML = matches.map(s => `
@@ -166,8 +166,18 @@ document.getElementById("clearBtn").addEventListener("click", function(){
   document.getElementById("output").innerHTML = "";
   search.focus();
 });
+  function normalizeArabic(str) {
+  return str
+    .toLowerCase()
+    .replace(/[\u064B-\u065F]/g, "")      // إزالة التشكيلات
+    .replace(/[أإآا]/g, "ا")             // توحيد الهمزة إلى ألف
+    .replace(/ى/g, "ي")                  // تحويل الألف المقصورة إلى ياء
+    .replace(/ة/g, "ه");                 // تحويل التاء المربوطة إلى ه
+}
+
 </script>
 
 </body>
 </html>
+
 
