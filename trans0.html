@@ -1,166 +1,90 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>بحث في كل أوراق Google Sheet</title>
-  <style>
-    body { font-family: "Tajawal", sans-serif; background:#f7f7f8; padding:20px; text-align:center; }
-    input { width:90%; max-width:420px; padding:10px; font-size:18px; border-radius:8px; border:1px solid #ccc; }
-    .student{ background:#fff; border:1px solid #e1e1e1; padding:10px; margin:10px auto; max-width:420px; text-align:right; border-radius:8px;}
-    .status{ margin:10px 0; color:#555; }
-    button{ margin-top:8px; padding:8px 12px; border-radius:8px; border:none; background:#007bff; color:#fff; cursor:pointer;}
-  </style>
+<meta charset="utf-8">
+<title>البحث في جميع أوراق Google Sheets</title>
+<style>
+body { font-family: "Tajawal", sans-serif; background:#f7f8fa; text-align:center; padding:20px; }
+input { width:90%; max-width:400px; padding:10px; font-size:18px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; }
+.result { background:#fff; border:1px solid #ddd; border-radius:10px; margin:10px auto; padding:10px; max-width:400px; text-align:right; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+.name { font-weight:bold; color:#007bff; }
+.sheet-label { font-size:13px; color:#555; margin-bottom:4px; }
+</style>
 </head>
 <body>
-  <h2>🔎 البحث في كل أوراق Google Sheet</h2>
-  <div class="status" id="status">جارٍ التحميل...</div>
-  <input id="searchName" placeholder="اكتب الاسم أو رقم الجوال..." disabled>
-  <div><button onclick="clearSearch()">مسح</button></div>
-  <div id="result" style="display:none;"></div>
+
+<h2>🔍 البحث في كل أوراق Google Sheet</h2>
+<input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
+<div id="output">⏳ جارٍ تحميل البيانات...</div>
 
 <script>
-(async function(){
-  // ======== عدّل فقط هذا المعرف ========
-  const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
-  // =====================================
-  const statusEl = document.getElementById('status');
-  const searchInput = document.getElementById('searchName');
-  let students = [];
+const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
+let rows = [];
 
-  function setStatus(t){ statusEl.textContent = t; }
-
-  // 1) الحصول على أسماء الأوراق - نجرب feeds JSON (يدعم الشيت العام)
-  async function fetchSheetList(sid){
-    const url = `https://spreadsheets.google.com/feeds/worksheets/${sid}/public/basic?alt=json`;
-    try{
-      const r = await fetch(url);
-      if(!r.ok) throw new Error('fail-list');
-      const j = await r.json();
-      const entries = j.feed.entry || [];
-      return entries.map(e => ({ title: e.title.$t }));
-    }catch(err){
-      console.warn('فشل الحصول على قائمة الأوراق من feeds JSON:', err);
-      return null;
-    }
-  }
-
-  // 2) تحميل CSV لورقة اسمها sheetName
-  async function fetchSheetCSV(sid, sheetName){
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${sid}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
-    const r = await fetch(csvUrl);
-    if(!r.ok) throw new Error('fetch-csv-fail');
-    return r.text();
-  }
-
-  // 3) parse CSV -> array of objects
-  function parseCSV(text){
-    text = text.trim();
-    if(!text) return [];
-    const lines = text.split(/\r?\n/).filter(l=>l.trim()!=='');
-    if(lines.length < 1) return [];
-    const headers = lines[0].split(',').map(h=>h.trim());
-    const data = [];
-    for(let i=1;i<lines.length;i++){
-      // handle commas inside quotes naively by splitting only on commas not inside quotes would be better,
-      // but keep it simple — if your data may contain commas, tell me وسأحسن parsing.
-      const values = lines[i].split(',');
-      const obj = {};
-      headers.forEach((h,j)=> obj[h] = (values[j] || "").trim());
-      data.push(obj);
-    }
-    return data;
-  }
-
-  // 4) محاولة تحميل كل الأوراق بالتتابع (أو ورقة واحدة لو فشل)
-  setStatus('محاولة الحصول على أسماء الأوراق...');
-  let sheetList = await fetchSheetList(sheetId);
-
-  if(!sheetList || sheetList.length===0){
-    // إذا فشلنا، نحاول تحميل الورقة الافتراضية "Sheet1" ثم "Sheet 1" ثم اسم أول gid
-    setStatus('لم نستطع جلب أسماء الأوراق تلقائياً، سنجرب افتراضياً Sheet1...');
-    const tryNames = ['Sheet1','Sheet 1','sheet1'];
-    let loadedAny = false;
-    for(const n of tryNames){
-      try{
-        const txt = await fetchSheetCSV(sheetId, n);
-        const rows = parseCSV(txt);
-        students = students.concat(rows);
-        setStatus(`تم تحميل ورقة افتراضية: ${n} — ${rows.length} صف`);
-        loadedAny = true;
-        break;
-      }catch(e){
-        console.warn('try fallback', n, e);
-      }
-    }
-    if(!loadedAny){
-      setStatus('فشل تحميل الأوراق تلقائياً. تأكد أن الشيت: (1) عام للعرض و(2) تعمل من خادم HTTP وليس file://');
-    }
-  } else {
-    setStatus(`تم العثور على ${sheetList.length} ورقة. جاري تحميلها...`);
-    // تحميل متوازي لكل ورقة باستخدام Promise.allSettled
-    const promises = sheetList.map(s => fetchSheetCSV(sheetId, s.title)
-      .then(txt => ({name: s.title, rows: parseCSV(txt)}))
-      .catch(err => ({name: s.title, error: err}))
-    );
-    const results = await Promise.all(promises);
-    let total = 0, failed = 0;
-    for(const r of results){
-      if(r.error){ failed++; console.warn('فشل تحميل ورقة', r.name, r.error); continue; }
-      students = students.concat(r.rows.map(row => ({...row, __sheetName: r.name})));
-      total += r.rows.length;
-    }
-    setStatus(`اكتملت التحميل: ${total} صف من ${sheetList.length} ورقة${failed?` — فشل تحميل ${failed} ورقة`:"" : ""}`);
-  }
-
-  // الآن جهّز البحث
-  if(students.length>0){
-    searchInput.disabled = false;
-    searchInput.focus();
-  } else {
-    setStatus('لم يتم تحميل أي صفوف. تأكد أن الورقة تحتوي على الأعمدة: name,num,deger,mob وأن الشيت عام للعرض.');
-  }
-
-  // البحث أثناء الكتابة — ننتظر أن تكون البيانات جاهزة
-  searchInput.addEventListener('input', function(){
-    const keyword = this.value.trim().toLowerCase();
-    const res = document.getElementById('result');
-    if(keyword === ""){
-      res.style.display = 'none';
-      return;
-    }
-    const matches = students.filter(s =>
-      (s.name && s.name.toLowerCase().includes(keyword)) ||
-      (s.mob && s.mob.includes(keyword))
-    );
-    res.style.display = 'block';
-    showResults(matches);
+// 1️⃣ نحصل على قائمة الأوراق داخل الشيت
+fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`)
+  .then(res => res.text())
+  .then(txt => {
+    // استخراج أسماء الأوراق من النص
+    const matches = [...txt.matchAll(/"table":{"cols":.*?,"parsedNumHeaders":\d+},"status":"ok"}],"version":".*?","sig":".*?","reqId":"\d+","table":{"cols":/g)];
+    // هذه الطريقة معقدة قليلًا لأن Google لا يوفر API مباشر بدون مفتاح
+    // لذا سنستخدم نهج أبسط (مبني على التخمين اليدوي إن عرفت أسماء الأوراق)
+    // ✳️ بدلاً من هذا: ضع أسماء الأوراق هنا يدويًا إذا لم تظهر تلقائيًا:
+    const sheetNames = ["Sheet1", "Sheet2", "Sheet3"]; // ← غيّرها حسب أوراقك
+    
+    Promise.all(sheetNames.map(name => loadSheet(sheetId, name)))
+      .then(() => {
+        document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف من ${sheetNames.length} أوراق`;
+      })
+      .catch(err => {
+        document.getElementById("output").innerHTML = "⚠️ خطأ أثناء التحميل: " + err;
+      });
   });
 
-  function showResults(list){
-    const res = document.getElementById('result');
-    if(list.length === 0){
-      res.innerHTML = '<div class="status">❌ لا توجد نتائج مطابقة.</div>';
-      return;
-    }
-    res.innerHTML = list.map(s => `
-      <div class="student">
-        <div style="font-weight:700;color:#007bff">👤 ${s.name || ''}</div>
-        <div>📱 ${s.mob || ''}</div>
-        <div>🔢 ${s.num || ''}</div>
-        <div>💰 ${s.deger || ''}</div>
-        ${s.__sheetName? `<div style="font-size:12px;color:#666;margin-top:6px;">الورقة: ${s.__sheetName}</div>` : ''}
+// 2️⃣ تحميل بيانات ورقة بصيغة CSV
+function loadSheet(sheetId, sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+  return fetch(url)
+    .then(res => res.text())
+    .then(csv => {
+      const lines = csv.trim().split(/\r?\n/);
+      const headers = lines[0].replace(/"/g,"").split(",");
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].replace(/"/g,"").split(",");
+        const obj = {};
+        headers.forEach((h, j) => obj[h] = values[j]);
+        obj.sheet = sheetName; // نضيف اسم الورقة
+        rows.push(obj);
+      }
+    });
+}
+
+// 3️⃣ البحث أثناء الكتابة
+document.getElementById("search").addEventListener("input", function() {
+  const k = this.value.trim().toLowerCase();
+  const out = document.getElementById("output");
+
+  if (k === "") { out.innerHTML = ""; return; }
+
+  const matches = rows.filter(r => 
+    (r.name && r.name.toLowerCase().includes(k)) ||
+    (r.mob && r.mob.includes(k))
+  );
+
+  if (matches.length > 0) {
+    out.innerHTML = matches.map(s => `
+      <div class="result">
+        <div class="sheet-label">📄 من الورقة: ${s.sheet}</div>
+        <div class="name">👤 الاسم: ${s.name}</div>
+        <div>📱 الجوال: ${s.mob}</div>
+        <div>🔢 رقم الحوالة: ${s.num}</div>
+        <div>💰 المبلغ: ${s.deger}</div>
       </div>
-    `).join('');
+    `).join("");
+  } else {
+    out.innerHTML = "❌ لا توجد نتائج مطابقة";
   }
-
-  // زر مسح
-  window.clearSearch = function(){
-    searchInput.value = '';
-    document.getElementById('result').style.display = 'none';
-  };
-
-})();
+});
 </script>
 </body>
 </html>
