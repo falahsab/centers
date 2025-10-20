@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البحث في Google Sheets - متجاوب</title>
+<title>حوالات </title>
 <style>
 body {
   font-family: "Tajawal", sans-serif;
@@ -96,7 +96,7 @@ button#clearBtn:hover {
 </head>
 <body>
 
-<h2>🔍 البحث في Google Sheets</h2>
+<h2>🔍 البحث عن حوالة مستفيد</h2>
 
 <div class="search-container">
   <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
@@ -107,7 +107,7 @@ button#clearBtn:hover {
 
 <script>
 const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
-const sheetNames = ["Sheet1"]; // عدّل حسب أسماء الأوراق
+const sheetNames = ["Sheet1","Sheet2"]; // عدّل حسب أسماء الأوراق
 let rows = [];
 
 // تحميل كل الأوراق
@@ -148,7 +148,6 @@ document.getElementById("search").addEventListener("input", function(){
   if (matches.length > 0){
     out.innerHTML = matches.map(s => `
       <div class="result">
-        <div class="sheet-label">📄 من الورقة: ${s.sheet}</div>
         <div class="name">👤 الاسم: ${s.name}</div>
         <div class="info">📱 الجوال: ${s.mob}</div>
         <div class="info num">🔢 رقم الحوالة: ${s.num}</div>
@@ -171,3 +170,4 @@ document.getElementById("clearBtn").addEventListener("click", function(){
 
 </body>
 </html>
+
