@@ -3,55 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>حوالات </title>
+<title>بحث الحوالات</title>
 <style>
 body {
   font-family: "Tajawal", sans-serif;
-  background: #f2f4f7;
+  background: #f3f4f6;
   margin: 0;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
 }
 
 h2 {
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
-.search-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+/* 📦 مربع البحث */
+.search-box {
+  position: relative;
+  display: inline-block;
+ width: 100%;
+  max-width: 420px;
 }
 
-input#search {
-  flex: 1 1 200px;
-  max-width: 400px;
-  padding: 12px 15px;
-  font-size: 18px;
+.search-box input {
+ width: 80%;
+  padding: 12px 40px 12px 40px; /* padding-left = أيقونة المسح */
   border-radius: 10px;
   border: 1px solid #ccc;
+  font-size: 17px;
   outline: none;
+  direction: rtl;
+  transition: all 0.2s;
 }
 
-button#clearBtn {
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  background: #ff4d4f;
-  color: #fff;
+.search-box input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0,123,255,0.4);
+   
+}
+
+/* 🔍 أيقونة البحث على اليمين */
+.search-box .icon-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+}
+
+/* ✖ أيقونة المسح على اليسار */
+.search-box .icon-clear {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  transition: background 0.3s;
+  display: none;
+  color: #999;
+  transition: color 0.2s;
 }
 
-button#clearBtn:hover {
-  background: #d9363e;
+.search-box .icon-clear:hover {
+  color: #ff4d4f;
 }
 
+.search-box .icon-clear svg,
+.search-box .icon-search svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* النتائج */
 #output {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,102 +93,61 @@ button#clearBtn:hover {
   background: #fff;
   border-radius: 12px;
   padding: 15px 20px;
-  width: 90%;
+ width: 59%;
   max-width: 400px;
   text-align: right;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
 }
 
-.result:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-.name { font-weight: bold; color: #007bff; font-size: 18px; margin-bottom: 5px; }
-.sheet-label { font-size: 12px; color: #555; margin-bottom: 4px; }
+.name { font-weight: bold; color: #007bff; font-size: 18px; }
 .num { color: red; font-weight: bold; }
 .info { margin: 2px 0; }
 
-/* تحسين تجربة الجوال */
+/* 📱 متجاوب للجوال */
 @media (max-width: 480px) {
-  input#search {
+  .search-box input {
     font-size: 16px;
-    padding: 10px;
+    padding: 10px 35px 10px 35px;
   }
-  button#clearBtn {
-    font-size: 14px;
-    padding: 10px 15px;
-  }
-  .name { font-size: 16px; }
-  .num { font-size: 16px; }
-}
-  .search-container {
-  display: flex;
-  flex-wrap: nowrap;  /* اجعل العناصر في صف واحد */
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-input#search {
-  flex: 1 1 auto;
-  max-width: 400px;
-  padding: 12px 15px;
-  font-size: 18px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  outline: none;
-}
-
-button#clearBtn {
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  background: #ff4d4f;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button#clearBtn:hover {
-  background: #d9363e;
-}
-
-/* تحسين تجربة الجوال */
-@media (max-width: 480px) {
-  input#search {
-    font-size: 16px;
-    padding: 10px;
-  }
-  button#clearBtn {
-    font-size: 14px;
-    padding: 10px 15px;
+  .search-box .icon-search,
+  .search-box .icon-clear {
+    width: 16px;
+    height: 16px;
   }
 }
-
 </style>
 </head>
 <body>
 
 <h2>🔍 البحث عن حوالة مستفيد</h2>
 
-<div class="search-container">
-  <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
-  <button id="clearBtn">✖ مسح</button>
-</div>
+<div class="search-box">
+  <!-- أيقونة البحث على اليمين -->
+  <span class="icon-search">
+    <svg viewBox="0 0 16 16" fill="currentColor">
+      <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"></path>
+    </svg>
+  </span>
 
+  <!-- مربع الإدخال -->
+  <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
+
+  <!-- أيقونة المسح على اليسار -->
+  <span class="icon-clear" id="clearBtn">
+    <svg viewBox="0 0 16 16" fill="currentColor">
+      <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"></path>
+    </svg>
+  </span>
+</div>
 
 <div id="output">⏳ جارٍ تحميل البيانات...</div>
 
 <script>
 const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
-const sheetNames = ["Sheet1","Sheet2"]; // عدّل حسب أسماء الأوراق
+const sheetNames = ["Sheet1","Sheet2"];
 let rows = [];
 
-// تحميل كل الأوراق
+// تحميل البيانات من جميع الشيتات
 Promise.all(sheetNames.map(name => {
   const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
   return fetch(url)
@@ -174,26 +164,34 @@ Promise.all(sheetNames.map(name => {
       }
     });
 }))
-.then(() => {
-  document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف`;
-})
-.catch(err => {
-  document.getElementById("output").innerHTML = `❌ خطأ في التحميل: ${err}`;
+.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف`)
+.catch(err => document.getElementById("output").innerHTML = `❌ خطأ: ${err}`);
+
+// عناصر DOM
+const search = document.getElementById("search");
+const clearBtn = document.getElementById("clearBtn");
+const output = document.getElementById("output");
+
+// debounce لتأخير البحث
+let debounceTimer;
+search.addEventListener("input", function(){
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => performSearch(this.value), 300);
 });
 
-// البحث أثناء الكتابة
-document.getElementById("search").addEventListener("input", function(){
-  const k = this.value.trim().toLowerCase();
-  const out = document.getElementById("output");
-  if (k === "") { out.innerHTML = ""; return; }
+// البحث
+function performSearch(query){
+  const k = query.trim().toLowerCase();
+  clearBtn.style.display = k ? "block" : "none";
+  if (!k) { output.innerHTML = ""; return; }
 
-const matches = rows.filter(r =>
-  (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
-  (r.mob && r.mob.includes(k))
-);
+  const matches = rows.filter(r =>
+    (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
+    (r.mob && r.mob.includes(k))
+  );
 
-  if (matches.length > 0){
-    out.innerHTML = matches.map(s => `
+  if(matches.length){
+    output.innerHTML = matches.map(s => `
       <div class="result">
         <div class="name">👤 الاسم: ${s.name}</div>
         <div class="info">📱 الجوال: ${s.mob}</div>
@@ -202,30 +200,29 @@ const matches = rows.filter(r =>
       </div>
     `).join("");
   } else {
-    out.innerHTML = "❌ لا توجد نتائج مطابقة";
+    output.innerHTML = "❌ لا توجد نتائج مطابقة";
   }
-});
-
-// زر المسح
-document.getElementById("clearBtn").addEventListener("click", function(){
-  const search = document.getElementById("search");
-  search.value = "";
-  document.getElementById("output").innerHTML = "";
-  search.focus();
-});
-  function normalizeArabic(str) {
-  return str
-    .toLowerCase()
-    .replace(/[\u064B-\u065F]/g, "")      // إزالة التشكيلات
-    .replace(/[أإآا]/g, "ا")             // توحيد الهمزة إلى ألف
-    .replace(/ى/g, "ي")                  // تحويل الألف المقصورة إلى ياء
-    .replace(/ة/g, "ه");                 // تحويل التاء المربوطة إلى ه
 }
 
+// مسح النص
+clearBtn.addEventListener("click", () => {
+  search.value = "";
+  clearBtn.style.display = "none";
+  output.innerHTML = "";
+  search.focus();
+});
+
+// تطبيع العربية
+function normalizeArabic(str){
+  return str
+    .toLowerCase()
+    .replace(/[\u064B-\u065F]/g, "")
+    .replace(/[أإآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/\s+/g, ""); // إزالة المسافات
+}
 </script>
 
 </body>
 </html>
-
-
-
