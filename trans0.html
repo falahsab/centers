@@ -2,86 +2,101 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>البحث في جميع أوراق Google Sheets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البحث في Google Sheets - متجاوب</title>
 <style>
-  body {
-    font-family: "Tajawal", sans-serif;
-    background: #f2f4f7;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-  }
+body {
+  font-family: "Tajawal", sans-serif;
+  background: #f2f4f7;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
 
-  h2 {
-    color: #333;
-    margin-bottom: 20px;
-  }
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
 
-  .search-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
+input#search {
+  flex: 1 1 200px;
+  max-width: 400px;
+  padding: 12px 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+button#clearBtn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #ff4d4f;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button#clearBtn:hover {
+  background: #d9363e;
+}
+
+#output {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.result {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  width: 90%;
+  max-width: 400px;
+  text-align: right;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.result:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.name { font-weight: bold; color: #007bff; font-size: 18px; margin-bottom: 5px; }
+.sheet-label { font-size: 12px; color: #555; margin-bottom: 4px; }
+.num { color: red; font-weight: bold; }
+.info { margin: 2px 0; }
+
+/* تحسين تجربة الجوال */
+@media (max-width: 480px) {
   input#search {
-    flex: 1 1 250px;
-    max-width: 400px;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    outline: none;
-  }
-
-  button#clearBtn {
-    padding: 10px 20px;
     font-size: 16px;
-    border-radius: 10px;
-    border: none;
-    background: #ff4d4f;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
+    padding: 10px;
   }
-
-  button#clearBtn:hover {
-    background: #d9363e;
+  button#clearBtn {
+    font-size: 14px;
+    padding: 10px 15px;
   }
-
-  #output {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .result {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px 20px;
-    max-width: 400px;
-    width: 90%;
-    text-align: right;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-  }
-
-  .result:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  }
-
-  .name { font-weight: bold; color: #007bff; font-size: 18px; margin-bottom: 5px; }
-  .sheet-label { font-size: 12px; color: #555; margin-bottom: 4px; }
-  .num { color: red; font-weight: bold; }
-  .info { margin: 2px 0; }
+  .name { font-size: 16px; }
+  .num { font-size: 16px; }
+}
 </style>
 </head>
 <body>
 
-<h2>🔍 البحث في جميع أوراق Google Sheets</h2>
+<h2>🔍 البحث في Google Sheets</h2>
 
 <div class="search-container">
   <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
@@ -92,7 +107,7 @@
 
 <script>
 const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
-const sheetNames = ["Sheet1","Sheet2"]; // غيّر حسب أسماء الأوراق
+const sheetNames = ["Sheet1"]; // عدّل حسب أسماء الأوراق
 let rows = [];
 
 // تحميل كل الأوراق
@@ -133,7 +148,7 @@ document.getElementById("search").addEventListener("input", function(){
   if (matches.length > 0){
     out.innerHTML = matches.map(s => `
       <div class="result">
-      
+        <div class="sheet-label">📄 من الورقة: ${s.sheet}</div>
         <div class="name">👤 الاسم: ${s.name}</div>
         <div class="info">📱 الجوال: ${s.mob}</div>
         <div class="info num">🔢 رقم الحوالة: ${s.num}</div>
