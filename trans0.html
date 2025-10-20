@@ -9,7 +9,7 @@ body {
   font-family: "Tajawal", sans-serif;
   background: #f3f4f6;
   margin: 0;
- 
+  
   text-align: center;
 }
 
@@ -93,7 +93,7 @@ h2 {
   background: #fff;
   border-radius: 12px;
   padding: 15px 20px;
- width: 100%;
+ width: 59%;
   max-width: 400px;
   text-align: right;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -164,7 +164,7 @@ Promise.all(sheetNames.map(name => {
       }
     });
 }))
-.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} حوالة`)
+.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف`)
 .catch(err => document.getElementById("output").innerHTML = `❌ خطأ: ${err}`);
 
 // عناصر DOM
@@ -226,6 +226,3 @@ function normalizeArabic(str){
 
 </body>
 </html>
-
-
-
