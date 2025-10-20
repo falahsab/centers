@@ -1,43 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-      <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="حوالات">
-    <meta property="og:description" content="بنقرة احصل على حوالة المستفيد">
-
-   <meta property="og:type" content="website">
-      <title>حوالات</title>
-  <img src="img/Yamaan-ye.png" alt="يمان-حوالات">
- <link rel="stylesheet" href="css/trans-ifo.css"> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>البحث في جميع أوراق Google Sheets</title>
+  <style>
+    body {
+      font-family: "Tajawal", sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    .student {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin: 10px auto;
+      padding: 10px;
+      max-width: 400px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: right;
+    }
+    .name { font-weight: bold; color: #007bff; margin-bottom: 5px; }
+  </style>
 </head>
 <body>
 
-  <h2>البحث عن حوالة مستفيد</h2>
-
- <div class="search-container">
-    <input type="text" id="searchName" placeholder="اكتب الاسم أو الرقم">
-    <button class="clear-btn" onclick="clearSearch()">❌</button>
-  </div>
-
-
-
-  <div id="result"></div>
+  <h2>🔍 البحث في جميع أوراق Google Sheets</h2>
+  <input type="text" id="searchName" placeholder="اكتب الاسم أو رقم الجوال...">
+  <button onclick="clearSearch()">مسح</button>
+  <div id="result" style="display:none;"></div>
 
   <script>
     let students = [];
 
-    // رابط ملف CSV (عدّل الرابط لملفك الحقيقي)
-    const csvUrl = "csv/transinfo.csv";
+    // 🔗 ضع هنا معرف Google Sheet فقط
+    const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
 
-    // تحميل ملف CSV
-    fetch(csvUrl)
+    // 1️⃣ نحصل على قائمة الأوراق داخل الشيت
+    fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`)
       .then(res => res.text())
       .then(text => {
-        students = parseCSV(text);
+        const sheetNames = [...text.matchAll(/gid=(\d+).*?label":"(.*?)"/g)]
+          .map(m => ({ gid: m[1], name: m[2] }));
+        console.log("الأوراق:", sheetNames);
+        // 2️⃣ نجلب بيانات كل ورقة
+        sheetNames.forEach(s => loadSheetData(sheetId, s.name));
       });
+
+    // 2️⃣ تحميل بيانات ورقة معينة بصيغة CSV
+    function loadSheetData(sheetId, sheetName) {
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+      fetch(csvUrl)
+        .then(res => res.text())
+        .then(text => {
+          let rows = parseCSV(text);
+          students = students.concat(rows);
+          console.log(`✅ تم تحميل ${rows.length} صف من ورقة: ${sheetName}`);
+        })
+        .catch(err => console.warn(`⚠️ فشل تحميل ${sheetName}:`, err));
+    }
 
     // تحويل CSV إلى Array
     function parseCSV(text) {
@@ -54,7 +95,7 @@
       return data;
     }
 
-    // البحث أثناء الكتابة
+    // البحث أثناء الكتابة (في الاسم أو رقم الجوال)
     document.getElementById("searchName").addEventListener("input", function() {
       let keyword = this.value.trim().toLowerCase();
       let res = document.getElementById("result");
@@ -65,27 +106,28 @@
       }
 
       let matches = students.filter(s => 
-        s.name.toLowerCase().includes(keyword) || 
-        s.num.includes(keyword)
+        s.name?.toLowerCase().includes(keyword) || 
+        s.mob?.includes(keyword)
       );
 
       res.style.display = "block"; 
       showResults(matches);
     });
 
+    // عرض النتائج
     function showResults(list) {
       let res = document.getElementById("result");
       if (list.length > 0) {
         res.innerHTML = list.map(s => 
           `<div class="student">
-             <div class="name">👤 الاســـــــــــم: ${s.name}</div>
-             <div>📱 رقـم الجوال: ${s.mob}</div>
-             <div class="num">🔢 رقم الحوالة: ${s.num}</div>
-             <div>💰 المبــــــــــلغ: ${s.deger}</div>
+             <div class="name">👤 الاسم: ${s.name}</div>
+             <div>📱 الجوال: ${s.mob}</div>
+             <div>🔢 رقم الحوالة: ${s.num}</div>
+             <div>💰 المبلغ: ${s.deger}</div>
            </div>`
         ).join("");
       } else {
-        res.innerHTML = "لا توجد نتائج مطابقة.";
+        res.innerHTML = "❌ لا توجد نتائج مطابقة.";
       }
     }
 
@@ -98,10 +140,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
