@@ -164,7 +164,7 @@ Promise.all(sheetNames.map(name => {
       }
     });
 }))
-.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف`)
+.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} حوالة`)
 .catch(err => document.getElementById("output").innerHTML = `❌ خطأ: ${err}`);
 
 // عناصر DOM
@@ -226,6 +226,7 @@ function normalizeArabic(str){
 
 </body>
 </html>
+
 
 
 
