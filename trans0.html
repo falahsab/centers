@@ -4,87 +4,155 @@
 <meta charset="utf-8">
 <title>البحث في جميع أوراق Google Sheets</title>
 <style>
-body { font-family: "Tajawal", sans-serif; background:#f7f8fa; text-align:center; padding:20px; }
-input { width:90%; max-width:400px; padding:10px; font-size:18px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; }
-.result { background:#fff; border:1px solid #ddd; border-radius:10px; margin:10px auto; padding:10px; max-width:400px; text-align:right; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
-.name { font-weight:bold; color:#007bff; }
-.sheet-label { font-size:13px; color:#555; margin-bottom:4px; }
+  body {
+    font-family: "Tajawal", sans-serif;
+    background: #f2f4f7;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .search-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  input#search {
+    flex: 1 1 250px;
+    max-width: 400px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  button#clearBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background: #ff4d4f;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button#clearBtn:hover {
+    background: #d9363e;
+  }
+
+  #output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .result {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    max-width: 400px;
+    width: 90%;
+    text-align: right;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .result:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  }
+
+  .name { font-weight: bold; color: #007bff; font-size: 18px; margin-bottom: 5px; }
+  .sheet-label { font-size: 12px; color: #555; margin-bottom: 4px; }
+  .num { color: red; font-weight: bold; }
+  .info { margin: 2px 0; }
 </style>
 </head>
 <body>
 
-<h2>🔍 البحث في كل أوراق Google Sheet</h2>
-<input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
+<h2>🔍 البحث في جميع أوراق Google Sheets</h2>
+
+<div class="search-container">
+  <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
+  <button id="clearBtn">مسح البحث</button>
+</div>
+
 <div id="output">⏳ جارٍ تحميل البيانات...</div>
 
 <script>
 const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
+const sheetNames = ["Sheet1","Sheet2"]; // غيّر حسب أسماء الأوراق
 let rows = [];
 
-// 1️⃣ نحصل على قائمة الأوراق داخل الشيت
-fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`)
-  .then(res => res.text())
-  .then(txt => {
-    // استخراج أسماء الأوراق من النص
-    const matches = [...txt.matchAll(/"table":{"cols":.*?,"parsedNumHeaders":\d+},"status":"ok"}],"version":".*?","sig":".*?","reqId":"\d+","table":{"cols":/g)];
-    // هذه الطريقة معقدة قليلًا لأن Google لا يوفر API مباشر بدون مفتاح
-    // لذا سنستخدم نهج أبسط (مبني على التخمين اليدوي إن عرفت أسماء الأوراق)
-    // ✳️ بدلاً من هذا: ضع أسماء الأوراق هنا يدويًا إذا لم تظهر تلقائيًا:
-    const sheetNames = ["Sheet1", "Sheet2", "Sheet3"]; // ← غيّرها حسب أوراقك
-    
-    Promise.all(sheetNames.map(name => loadSheet(sheetId, name)))
-      .then(() => {
-        document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف من ${sheetNames.length} أوراق`;
-      })
-      .catch(err => {
-        document.getElementById("output").innerHTML = "⚠️ خطأ أثناء التحميل: " + err;
-      });
-  });
-
-// 2️⃣ تحميل بيانات ورقة بصيغة CSV
-function loadSheet(sheetId, sheetName) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+// تحميل كل الأوراق
+Promise.all(sheetNames.map(name => {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
   return fetch(url)
     .then(res => res.text())
     .then(csv => {
       const lines = csv.trim().split(/\r?\n/);
       const headers = lines[0].replace(/"/g,"").split(",");
-      for (let i = 1; i < lines.length; i++) {
+      for (let i=1;i<lines.length;i++){
         const values = lines[i].replace(/"/g,"").split(",");
         const obj = {};
-        headers.forEach((h, j) => obj[h] = values[j]);
-        obj.sheet = sheetName; // نضيف اسم الورقة
+        headers.forEach((h,j)=>obj[h]=values[j]);
+        obj.sheet = name;
         rows.push(obj);
       }
     });
-}
+}))
+.then(() => {
+  document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} صف`;
+})
+.catch(err => {
+  document.getElementById("output").innerHTML = `❌ خطأ في التحميل: ${err}`;
+});
 
-// 3️⃣ البحث أثناء الكتابة
-document.getElementById("search").addEventListener("input", function() {
+// البحث أثناء الكتابة
+document.getElementById("search").addEventListener("input", function(){
   const k = this.value.trim().toLowerCase();
   const out = document.getElementById("output");
-
   if (k === "") { out.innerHTML = ""; return; }
 
-  const matches = rows.filter(r => 
+  const matches = rows.filter(r =>
     (r.name && r.name.toLowerCase().includes(k)) ||
     (r.mob && r.mob.includes(k))
   );
 
-  if (matches.length > 0) {
+  if (matches.length > 0){
     out.innerHTML = matches.map(s => `
       <div class="result">
-        <div class="sheet-label">📄 من الورقة: ${s.sheet}</div>
+      
         <div class="name">👤 الاسم: ${s.name}</div>
-        <div>📱 الجوال: ${s.mob}</div>
-        <div>🔢 رقم الحوالة: ${s.num}</div>
-        <div>💰 المبلغ: ${s.deger}</div>
+        <div class="info">📱 الجوال: ${s.mob}</div>
+        <div class="info num">🔢 رقم الحوالة: ${s.num}</div>
+        <div class="info">💰 المبلغ: ${s.deger}</div>
       </div>
     `).join("");
   } else {
     out.innerHTML = "❌ لا توجد نتائج مطابقة";
   }
 });
+
+// زر المسح
+document.getElementById("clearBtn").addEventListener("click", function(){
+  const search = document.getElementById("search");
+  search.value = "";
+  document.getElementById("output").innerHTML = "";
+  search.focus();
+});
 </script>
+
 </body>
 </html>
