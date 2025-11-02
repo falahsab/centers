@@ -106,7 +106,7 @@ fetch(URL)
     // عند اختيار المحافظة
     govSelect.addEventListener("change", ()=>{
         const selectedGov = govSelect.value;
-        citySelect.innerHTML='<option value="">اختر المدينة</option>';
+        citySelect.innerHTML='<option value="">اختر المديرية</option>';
         centersDiv.innerHTML="";
         if(!selectedGov){ citySelect.disabled=true; return; }
 
@@ -159,4 +159,5 @@ fetch(URL)
 
 </body>
 </html>
+
 
