@@ -1,80 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="مراكز القسائم">
-    <meta property="og:description" content="بنقرة احصل على اسماء المراكز">
-    <meta property="og:image" content="/img/images01.jpeg"> <!-- رابط الصورة -->
-   <meta property="og:url" content="https://yourdomain.com"> <!-- رابط موقعك -->
-   <meta property="og:type" content="website">
-    <title>مــــراكز القســـائم</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختيار المحافظة والمدينة والمراكز</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body { font-family:"Cairo",sans-serif; background:#e6f2f8; direction:rtl; margin:0; padding:20px; }
+.container { max-width:650px; margin:auto; background:#fff; padding:25px 20px 40px 20px; border-radius:15px; box-shadow:0 6px 15px rgba(0,0,0,0.1);}
+h2 { color:#0d4d6b; font-weight:600; font-size:24px; margin-bottom:25px; }
+select { width:100%; padding:14px; margin:12px 0; font-size:16px; border-radius:10px; border:1px solid #a0c4d8; background:#f0f8ff; transition:all 0.3s; }
+select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); outline:none; }
+#centersList { margin-top:25px; }
+.center-item {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  background: #f0f8ff;
+  border-radius: 10px;
+  padding: 6px 10px;       /* البطاقة أصغر */
+  margin: 5px 0;
+  font-size: 18px;          /* نص المركز أكبر */
+  font-weight: 700;         /* بولد */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  
-   
- <!-- load stylesheets -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/fa-style.css"> 
+.center-item .serial-box {
+  width: 25px;              /* أصغر */
+  height: 25px;             /* أصغر */
+  font-size: 14px;          /* خط الرقم أصغر */
+  background: #0d4d6b;
+  color: white;
+  font-weight: 700;         /* بولد */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+@media(max-width:600px){
+  .center-item {
+    font-size: 16px;
+    padding:5px 8px;
+  }
+  .center-item .serial-box{
+    width:30px;
+    height:30px;
+    font-size:12px;
+  }
+}
+
+
+.center-item:hover { transform:translateY(-2px); box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.center-item .serial-box { width:50px; height:50px; background:#0d4d6b; color:white; font-weight:600; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-left:15px; flex-shrink:0; font-size:16px;}
+.center-item .center-name { flex-grow:1; word-break:break-word; }
+@media(max-width:600px){ .container{padding:20px 15px 30px 15px;} select{font-size:15px;} .center-item{font-size:15px;} .center-item .serial-box{width:40px; height:40px; font-size:14px;} }
+</style>
 </head>
+<body>
 
-    <body>
-
-<button class="accordion">محافظة صنعاء HRP1</button>
-<div class="panel">
-<p><b><span style="color: red;">&nbsp;مديرية أرحب :</span></b></p><p>- مركز هزم</p><p>- مركز بيت الورد</p><p>- مستشفى عومرة</p><p>- مركز الحيفة</p><p><span style="color: red;">&nbsp;مديرية بني حشيش :</span></p><p>- مركز بيت السيد</p><p>- مركز الحيوف</p><p>- وحدة الخربة</p><p>- مركز بيت الجمرة</p><p>- وحدة الشعاب</p><p>- مركز شبام الغراس</p><p>- مركز صرف الصحي</p><p>- مركز غضران</p><p>- الوحده الصحية عيال مالك</p><p><b><span style="color: red;">مديرية سنحان :</span></b></p><p>- مركز مسعود</p><p>- مركز خيران</p><p>- مجمع سالم قطن</p><p>- مجمع الهندوانة</p><p>- وحدة جبيب</p><p>- مركز وادي االجبار</p><p>- وحدة بيت النمير</p><p>- مركز االندلس</p><p>- مركز قاع القيضي</p><p>- مركز بيت عقب</p><p>- وحدة جوب</p><p>- وحدة بني شايع</p><p>- مركز اللجام</p><p>ا- مجمع الشهيد الصماد</p><p>- مركز القوبري</p><p>- وحدة الصحية الفروات</p><p>- مستشفى سيان الريفي</p><p><span style="color: red;"><b>مديرية همدان :</b></span></p><p>- الوحدة الصحية بيت غفر</p><p>- المركز الصحي وادي ظهر</p><p>- وحدة علو ظالع</p><p>- وحدة سوق الربوع</p><p>- الوحدة الصحية قراتيل</p><p>- الوحدة الصحية المنقب</p><p>- وحدة صحية حاز</p><p>- وحدة صحية ذرحان</p><p>- المركز الصحي خلقة</p><p>- الوحدة الصحية قاع العرة</p><p>- المركز الصحي الجاهلية</p><p>- مركز صحي الحاوري</p><p>- وحدة صحية مدام</p><p>- وحدة صحية جربان</p><p>- مستشفى االمومة والطفولة قاع الرقه</p><p>- مستشفى همدان العام</p><p>- مستشفى 22 مايو ضالع همدان</p>
-</div>
-
-<button class="accordion">محافظة مـأرب HRP1-s</button>
-<div class="panel">
- <p>&nbsp;المرافق التي تتبع القسيمه في مأرب :</p><p><b><span style="color: red;">- مديرية حريب :</span></b></p><p>- مستشفى حريب العام</p><p><b><span style="color: red;">- مديرية الوادي :&nbsp;</span></b></p><p>- مستشفى الوحدة الحصون</p><p>- مستشفى كرى العام&nbsp;</p><p>- مركز صحي المشير</p><p>- مركز صحي النقيعاء</p><p><span style="color: red;"><b>- مديرية المدينة :</b></span></p><p>- مستشفى الشهيد محمد هايل</p><p>- وحدة الرجو الصحية</p><p>- المستشفى الميداني الميل</p><p>- مستشفى الشهيد احمد جحزة / الجفره</p><p>- هيئة مستشفى مأرب العام&nbsp;</p><p>- مستشفى 26 سبتمبر&nbsp;</p><p>- الوحدة الصحية منين الحدد&nbsp;</p><p>- وحدة صحية المطار&nbsp;</p><p>- وحدة الروضة&nbsp;</p><p>- مستشفى النوري&nbsp;</p><p>- مستشفى طوارى الجوف&nbsp;</p><p><br /></p>
+<div class="container">
+<h2>🏥 اختيار المحافظة → المدينة → عرض المراكز الطبية</h2>
+<select id="governorate"><option value="">اختر المحافظة</option></select>
+<select id="city" disabled><option value="">اختر المدينة</option></select>
+<div id="centersList"></div>
 </div>
 
-<button class="accordion">محافظة الحديدة HRP ll</button>
-<div class="panel">
-  <p>&nbsp;المرافق التي تتبع القسائم في الحديدة ( IHRP 2 )</p><p><br /></p><p><b><span style="color: red;">مديرية زبيد :</span></b></p><p>مركز الهتار الصحي</p><p>مركز الموقر الصحي</p><p>مركز زبيد الصحي</p><p>مستشفى زبيد الريفي</p><p>وحدة حبيل البدوه الصحية</p><p>محوى دهمش الصحي</p><p>وحدة المرشدية الصحية</p><p>وحدة الريان الصحية</p><p>وحدة الحكامية الصحية</p><p>وحدة المحط الصحية</p><p>وحدة الزربية الصحية</p><p>وحدة القرشية الصحية</p><p>وحدة الحوطة الصحية</p><p>وحدة الشباريق الصحية</p><p>وحدة الطويلة الصحية</p><p>وحدة باسات الصحية</p><p>وحدة البدوه الصحية</p><p>وحدة محوى الغربي الصحية</p><p><br /></p><p>&nbsp;</p>
-</div>
-  
-<button class="accordion">محافظة لحج HRP11-s</button>
-<div class="panel">
-    <p><b><span style="color: red;">&nbsp;الحوطة :</span></b></p><p>- مستشفى ابن خلدون</p><p>- مركز الأمومة والطفولة - الحوطة</p><p><b><span style="color: red;">تبن :</span></b></p><p>- مستشفى الوهط</p><p>- الوحدة الصحة هران ديان</p><p>- المركز الصحي الفيوش</p><p>- المركز الصحي بئر ناصر / العند</p><p>- الوحدة الصحية الشقعة</p><p>- وحدة الشهيد عبد القادر - المجحفة</p><p>- عيادة الندى - ناهد سعيد هندي شميلة</p><p><br /></p><p><b><span style="color: red;">المسيمير :</span></b></p><p>- مستشفى المسيمير</p><p>- الوحدة الصحية جول مدرم</p><p>- الوحدة الصحية عقان</p><p>- الوحدة الصحية كدان</p><p>- الوحدة الصحية نعمان</p><p>- الوحدة الصحية حبيل حنش</p><p><br /></p><p><span style="color: red;"><b>ردفان :</b></span></p><p>- مستشفى ردفان</p><p>- مركز الأمومة والطفولة - ردفان</p><p>- الوحدة الصحية الظاهرة</p><p>- الوحدة الصحية جبلة</p><p>- الوحدة الصحية نمرة</p><p>- الوحدة الصحية الثمري</p><p>- الوحدة الصحية دبسان</p><p>- عيادة النور - فايزة</p><p><br /></p><p><b><span style="color: red;">طور الباحة :</span></b></p><p>- مستشفى طور الباحة</p><p>- مركز الأمومة والطفولة - طور الباحة</p><p>- المركز الصحي الغول</p><p>- المركز الصحي الفرشة</p><p>- الوحدة الصحية الشعبة</p><p>- الوحدة الصحية الخطابية</p><p>- الوحدة الصحية المعامية</p><p>- الوحدة الصحية القاضي</p><p>- الوحدة الصحية الرجاع</p><p>- الوحدة الصحية الريدة</p><p><br /></p>
-</div>
-  
-<button class="accordion">محافظة ذمار EKN</button>
-<div class="panel">
-  <p>&nbsp;المرافق التي تتبع القسائم في ذمار ( EKN )</p><p><br /></p><p><span style="color: red;"><b>مديرية جبل الشرق :</b></span></p><p>- مستشفى مدينة الشرق&nbsp;</p><p>- مركز الجمعه&nbsp;</p><p>- مركز الشهداء ( الخميس ) الصحي&nbsp;</p><p>- وحدة جرن الخولي</p><p>- وحدة عمر الحاج&nbsp;</p><p>- وحدة بني هارون&nbsp;</p><p>- وحدة حظران&nbsp;</p><p>- وحدة الطرحه&nbsp;</p><p>- مركز الحضر&nbsp;</p><p>- وحدة جمعة العامري&nbsp;</p><p>- وحدة مغربة العنب&nbsp;</p><p>- وحدة القارة&nbsp;</p><p><br /></p><p><span style="color: red;"><b>مديرية جهران :</b></span></p><p>- مركز أفق</p><p>- مركز معبر&nbsp;</p><p>- مستشفى الوحدة التعليمي</p><p>&nbsp;- مركز الحلة&nbsp;</p><p>- مركز الخربة&nbsp;</p><p>- مستشفى رصابه</p><p>- وحدة المحل</p><p>-&nbsp; وحدة الثنية بني فلاح&nbsp;&nbsp;</p><p>- مركز صنعه</p><p><br /></p><p><b><span style="color: red;">مديرية عتمة :</span></b></p><p>- وحدة الأحد</p><p>- وحدة بني البحري&nbsp;</p><p>- مركز الميدان&nbsp;</p><p>- مركز وادي الماجل&nbsp;</p><p>- مستشفى 26 سبتمبر&nbsp;</p><p>- وحدة الصير بلاد الريمة&nbsp;</p><p>- وحدة القشب&nbsp;</p><p>- وحدة جمعة حمير&nbsp;</p><p>- وحدة يفاعه&nbsp;</p><p>- وحدة المقنزعه&nbsp;</p><p>- مركز الشرم&nbsp;</p><p>- وحدة الضبر&nbsp;</p><p>- وحدة بني رفيع&nbsp;</p><p>- وحدة السقة&nbsp;</p><p>- وحدة سيعور&nbsp;</p><p><br /></p><p><b><span style="color: red;">مديرية مدينة ذمار :</span></b></p><p>- مركز الحميات</p><p>- مركز الصحة اَلإنجابية</p><p>- هيئة مستشفى ذمار العام</p><p>- مركز الوحدة</p><p>- مركز المواهب</p><p>- مركز هجرة منقذه</p><p>- مركز الهلال</p><p>- مركز الجدد</p><p><br /></p><p><span style="color: red;"><b>مديرية المنار :</b></span></p><p>- مركز سوق العفة</p><p>- مركز بني سلامة</p><p>- مستشفى الوحدة - المنار</p><p>- وحدة الجبجب - المنار</p><p>- وحدة المصنعة</p><p>- وحدة ذاهب</p><p>- وحدة ذي صبل</p><p>- وحدة عنبان</p><p>- وحدة غربان</p><div><br /></div>
-</div>
+<script>
+const SHEET_ID = "1OZFj2TPLngq23Gr9p1AWrBxI_vh_LjZrwn1sOmps8Bo";
+const SHEET_NAME = "Sheet1";
+const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
 
-        <button class="accordion">محافظة صعدة EKN</button>
-<div class="panel">
- <p>&nbsp;المرافق التي تتبع القسائم في صعده ( EKN )</p><p><br /></p><p>مديرية سحار :</p><p>- مستشفى&nbsp; الطلح</p><p>- مركز&nbsp; بني&nbsp; عوير&nbsp; &nbsp;الشرقي</p><p>- مركز&nbsp; الحمزات</p><p>- مركز المهاذر</p><p>- مركز ضحيان</p><p>- مركز ربيع</p><p>- وحدة&nbsp; ال&nbsp; غبير</p><p><br /></p><p>مديرية الصفراء :</p><p>- وحدة بني عوير الغربي</p><p>- وحدة عكوان</p><p>- وحدة درب وادعة</p><p>- وحدة أل عمار</p><p>- وحدة شرمات</p><p>- مركز نشور</p><p>- مستشفى دماج</p><p><br /></p><p><span style="color: red;"><b>مديرية صعده :</b></span></p><p>- هيئة المستشفى الجمهوري</p><p>- مركز قحزة</p><p>- وحدة احفاد بلال</p>
-</div>
-<button class="accordion">محافظة عدن EKN-s</button>
-<div class="panel">
-  <p><div><b>المرافق التي تتبع القسائم في عدن ( EKN)</b></div><div><b><br /></b></div><div><b>المعلومة :</b></div><div><b>- مستشفى الصداقة</b></div><div><b><br /></b></div><div><b>- مجمع القطيع</b></div><div><b><br /></b></div><div><b>- مركز الطوارئ التوليدية (الشعب)</b></div><div><b><br /></b></div><div><b>- مركز العماد</b></div><div><b><br /></b></div><div><b>- مركز الطوارئ التوليدية دار سعد</b></div><div><b><br /></b></div><div><b>&nbsp;- مركز اللحوم</b></div><div><b><br /></b></div><div><b>&nbsp;- مركز البساتين</b></div><div><b><br /></b></div><div><b>&nbsp;- مجمع دار سعد</b></div><div><b><br /></b></div><div><b>- مجمع المحاريق</b></div><div><b><br /></b></div><div><b>- مجمع الممدارة</b></div><div><b><br /></b></div><div><b>- مركز عبدالقوي</b></div><div><b><br /></b></div><div><b>- مجمع الكود العثماني</b></div><div><b><br /></b></div><div><b>- مجمع الشيخ عثمان</b></div><div><b><br /></b></div><div><b>- مجمع الميدان</b></div><div><br /></div>
-</div>
-  
-<button class="accordion">محافظة ابين EKN-s</button>
-<div class="panel">
- <p>&nbsp;المرافق التي تتبع القسائم في أبين ( EKN )</p><p><span style="color: red;"><b>خنفر :</b></span></p><p>- مركز الامومة والتوليد المسيمير</p><p>- مركز الامومة والتوليد باتيس</p><p>- مركز الامومة والتوليد جعار</p><p>- المركز الصحي الكود</p><p>- المركز الصحي جعار</p><p>- الوحدة الصحية الرميلة</p><p>- مركز التوليد المخزن</p><p>- مركز الامومة والتوليد شقرة</p><p>- مركز التوليد الخبر</p><p>- الوحدة الصحية الدرجاج</p><p>- وحدة صحية الميوح&nbsp;</p><p>- وحدة صحية كدمة السيد قاسم</p><p>- وحدة صحية ملحة حميشانة</p><p>- مركز الامومة والتوليد الكود</p><p>- مركز التوليد الحصن</p><p>- مركز التوليد الرواء</p><p>- هيئة مستشفى الرازي</p><p>- وحدة الجول الشعبية</p><p>- وحدة الحرور</p><p>- وحدة صحية&nbsp; يرامس امسواد</p><p>- وحدة صحية حلمة</p><p>- وحدة صحية يرامس الجول</p><p>- وحدة عبر عثمان</p><p><br /></p><p><span style="color: red;"><b>&nbsp;زنجبار:&nbsp;</b></span></p><p>- مستشفى زنجبار&nbsp;</p><p>- وحدة عمودية</p><p>- وحدة صحية الشيخ عبدالله</p><p>- مركز ايوب الطبي 2</p><p>- مركز الامومة والطفولة زنجبار</p><p><br /></p><p><span style="color: red;"><b>لودر:</b></span></p><p>- المركز الصحي اماجل</p><p>المركز الصحي امصرة -&nbsp;</p><p>مستشفى الشهيد محنف-&nbsp;</p><p>وحدة صحية العين-&nbsp;</p>
-</div>
+fetch(URL)
+.then(res => res.text())
+.then(data => {
+    const json = JSON.parse(data.substr(47).slice(0, -2));
+    const rows = json.table.rows
+        .map(r => [
+            r.c[0]?.v?.toString().trim() || "",
+            r.c[1]?.v?.toString().trim() || "",
+            r.c[2]?.v?.toString().trim() || ""
+        ])
+        .filter(r => r.some(cell => cell !== "")); // تجاهل الصفوف الفارغة
 
-<button class="accordion">محافظة اب HRP ll</button>
-<div class="panel">
-  <div>المرافق التي تتبع القسائم في إب (IHRP 2)</div><div><br /></div><div><span style="color: red;"><b>مديرية العدين :</b></span></div><div>- المركز الصحي الجبلين&nbsp;</div><div>- المركز الصحي بلاد المليكي&nbsp;</div><div>- المركز الصحي قصل&nbsp;</div><div>- الوحدة الصحية الكريف&nbsp;</div><div>- المركز الصحي الرئاس&nbsp;</div><div>- مستشفى العدين&nbsp;</div><div>- الوحدة الصحية بني عبدالله&nbsp;</div><div>- الوحدة الصحية الجمجام</div><div>- الوحدة الصحية الكراب&nbsp;</div><div>- الوحدة الصحية وادي بني عبدالله&nbsp;</div><div>- الوحدة الصحية قصع / حليان&nbsp;</div><div>- المركز الصحي العمارنة&nbsp;</div><div>- الوحدة الصحية ذي معيد&nbsp;</div><div><br /></div><div><span style="color: red;"><b>مديرية جبلة :</b></span></div><div>- المركز الصحي السرايم&nbsp;</div><div>- مستفشى&nbsp; جبلة الجامعي&nbsp;</div><div>- المركز الصحي الأصابح&nbsp;</div><div>- الوحدة الصحية الشراعي&nbsp;</div><div><br /></div>
-</div>
+    // إزالة صف العناوين إذا موجود
+    if(rows[0] && rows[0][0].toLowerCase() === "governorate") rows.shift();
 
-<!-- load JS files -->     
-<script src="js/bootstrap.min.js"></script> 
+    const dataList = rows.map(r=>({governorate:r[0], city:r[1], center:r[2]}));
+
+    const govSelect = document.getElementById("governorate");
+    const citySelect = document.getElementById("city");
+    const centersDiv = document.getElementById("centersList");
+
+    // تعبئة قائمة المحافظات بدون تكرار
+    const governorates = [...new Set(dataList.map(d=>d.governorate))].sort();
+    governorates.forEach(g=>{
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = g;
+        govSelect.appendChild(opt);
+    });
+
+    // عند اختيار المحافظة
+    govSelect.addEventListener("change", ()=>{
+        const selectedGov = govSelect.value;
+        citySelect.innerHTML='<option value="">اختر المدينة</option>';
+        centersDiv.innerHTML="";
+        if(!selectedGov){ citySelect.disabled=true; return; }
+
+        // جلب المدن التابعة للمحافظة بدون تكرار
+        const cities=[...new Set(dataList.filter(d=>d.governorate===selectedGov).map(d=>d.city))].sort();
+        cities.forEach(c=>{
+            const opt=document.createElement("option");
+            opt.value=c;
+            opt.textContent=c;
+            citySelect.appendChild(opt);
+        });
+        citySelect.disabled=false;
+    });
+
+    // عند اختيار المدينة
+    citySelect.addEventListener("change", ()=>{
+        const selectedGov=govSelect.value;
+        const selectedCity=citySelect.value;
+        centersDiv.innerHTML="";
+        if(!selectedCity) return;
+
+        const centers=dataList
+            .filter(d=>d.governorate===selectedGov && d.city===selectedCity)
+            .map(d=>d.center)
+            .filter(Boolean);
+
+        if(centers.length===0){ centersDiv.innerHTML="<p>لا توجد مراكز لهذه المدينة.</p>"; return; }
+
+        centers.forEach((c,index)=>{
+            const div=document.createElement("div");
+            div.className="center-item";
+
+            const serialBox=document.createElement("div");
+            serialBox.className="serial-box";
+            serialBox.textContent=index+1;
+
+            const nameDiv=document.createElement("div");
+            nameDiv.className="center-name";
+            nameDiv.textContent=c;
+
+            div.appendChild(nameDiv);
+            div.appendChild(serialBox);
+            centersDiv.appendChild(div);
+        });
+    });
+
+})
+.catch(err=>console.error("خطأ في جلب البيانات:", err));
+</script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
