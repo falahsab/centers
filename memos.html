@@ -6,46 +6,75 @@
 <title>التعاميم - الموظفين</title>
 <style>
 body{font-family:"Tajawal",sans-serif;background:#0f172a;color:#e2e8f0;padding:15px;}
-.container{max-width:600px;margin:auto;}
+.container{max-width:700px;margin:auto;}
 h2{text-align:center;color:#06b6d4;}
-.memo{background:#1e293b;padding:10px;margin:10px 0;border-radius:8px;}
+.memo{background:#1e293b;padding:10px;margin:10px 0;border-radius:8px;position:relative;}
 .memo p{margin:5px 0;}
+.memo span.city{position:absolute;left:10px;top:10px;font-weight:bold;color:#facc15;}
+select{padding:8px;border-radius:6px;border:none;margin-bottom:15px;width:100%;}
 </style>
 </head>
 <body>
 <div class="container">
   <h2>التعاميم</h2>
+  <select id="cityFilter">
+    <option value="all">كل المحافظات</option>
+  </select>
   <div id="memos"></div>
 </div>
 
 <script>
-const SCRIPT_ID = "AKfycbwZvptN5ADftcmgTykOBTGV1s4zBASbU6R37w8TyeuJOMY4KtwgoRfjs3RELJEYndYj";
+const SCRIPT_ID = "AKfycbzMcjE-lMKfbYZH1QeKYfWwbU1VykSH3y6Lgk6ixWCI9eMuOavqzOzKegkpa-Udm5b8";
 const API_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
-
 const $ = s=>document.querySelector(s);
 
+let allMemos = [];
+// مجموعة ألوان للعناوين
+const titleColors = ['#f87171','#60a5fa','#34d399','#facc15','#a78bfa','#f472b6'];
+
 async function fetchMemos(){
-  try {
+  try{
     const res = await fetch(API_URL);
     const memos = await res.json();
-    const container = $('#memos');
-    container.innerHTML = '';
-    memos.forEach(m=>{
-      if(m.Status === 'Active'){
-        container.innerHTML += `
-          <div class="memo">
-            <b>${m.Title}</b> (${m.Date})<br>
-            <p>${m.Content}</p>
-          </div>`;
-      }
-    });
-  } catch(err){
+    allMemos = memos.filter(m=> m.Status === 'Active');
+    populateCities();
+    renderMemos('all');
+  }catch(err){
     console.error(err);
     $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
   }
 }
 
-// جلب التعاميم عند فتح الصفحة
+function renderMemos(city){
+  const container = $('#memos');
+  container.innerHTML = '';
+  const memosToShow = city==='all' ? allMemos : allMemos.filter(m=> m.City===city);
+  memosToShow.forEach((m,i)=>{
+    const color = titleColors[i % titleColors.length]; // لون متغير لكل عنوان
+    container.innerHTML += `
+      <div class="memo">
+        <span class="city">${m.City}</span>
+        <b style="color:${color}">${m.Title}</b> (${m.Date})<br>
+        <p>${m.Content}</p>
+      </div>`;
+  });
+}
+
+function populateCities(){
+  const cities = [...new Set(allMemos.map(m=>m.City))];
+  const select = $('#cityFilter');
+  cities.forEach(c=>{
+    const option = document.createElement('option');
+    option.value = c;
+    option.textContent = c;
+    select.appendChild(option);
+  });
+}
+
+$('#cityFilter').addEventListener('change', e=>{
+  renderMemos(e.target.value);
+});
+
 fetchMemos();
 </script>
 </body>
