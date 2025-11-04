@@ -6,222 +6,155 @@
 <title>اختيار المحافظة والمدينة والمراكز</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: "Cairo", sans-serif;
-  background: #e6f2f8;
-  direction: rtl;
-  margin: 0;
-  padding: 20px;
-}
-
-.container {
-  max-width: 650px;
-  margin: auto;
-  background: #ffffff;
-  padding: 25px 20px 40px 20px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-}
-
-h2 {
-  color: #0d4d6b;
-  font-weight: 600;
-  font-size: 24px;
-  margin-bottom: 25px;
-}
-
-select {
-  width: 100%;
-  padding: 14px;
-  margin: 12px 0;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 1px solid #a0c4d8;
-  background: #f0f8ff;
-  transition: all 0.3s;
-}
-
-select:focus {
-  border-color: #0d4d6b;
-  box-shadow: 0 0 8px rgba(13,77,107,0.2);
-  outline: none;
-}
-
-#centersList {
-  margin-top: 25px;
-}
-
+body { font-family:"Cairo",sans-serif; background:#e6f2f8; direction:rtl; margin:0; padding:20px; }
+.container { max-width:650px; margin:auto; background:#fff; padding:25px 20px 40px 20px; border-radius:15px; box-shadow:0 6px 15px rgba(0,0,0,0.1);}
+h2 { color:#0d4d6b; font-weight:600; font-size:24px; margin-bottom:25px; }
+select { width:100%; padding:14px; margin:12px 0; font-size:16px; border-radius:10px; border:1px solid #a0c4d8; background:#f0f8ff; transition:all 0.3s; }
+select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); outline:none; }
+#centersList { margin-top:25px; }
 .center-item {
   display: flex;
-  flex-direction: row-reverse; /* الرقم على اليمين، الاسم على اليسار */
+  flex-direction: row-reverse;
   align-items: center;
   background: #f0f8ff;
-  border-radius: 10px;
-  padding: 12px 18px;
-  margin: 8px 0;
-  font-size: 16px;
+  border-radius: 3px;
+  padding: 6px 10px;       /* البطاقة أصغر */
+  margin: 5px 0;
+  font-size: 18px;          /* نص المركز أكبر */
+  font-weight: 700;         /* بولد */
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.center-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
 .center-item .serial-box {
-  width: 50px;       /* عرض ثابت */
-  height: 50px;      /* ارتفاع ثابت */
+  width: 25px;              /* أصغر */
+  height: 25px;             /* أصغر */
+  font-size: 14px;          /* خط الرقم أصغر */
   background: #0d4d6b;
   color: white;
-  font-weight: 600;
-  border-radius: 10px;
+  font-weight: 700;         /* بولد */
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 15px; /* مسافة بين الرقم واسم المركز */
+  margin-left: 10px;
   flex-shrink: 0;
-  font-size: 16px;
 }
 
-.center-item .center-name {
-  flex-grow: 1;
-  word-break: break-word;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 20px 15px 30px 15px;
-  }
-  select {
-    font-size: 15px;
-  }
+@media(max-width:600px){
   .center-item {
-    font-size: 15px;
+    font-size: 16px;
+    padding:5px 8px;
   }
-  .center-item .serial-box {
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
+  .center-item .serial-box{
+    width:10px;
+    height:10px;
+    font-size:12px;
   }
 }
+
+
+.center-item:hover { transform:translateY(-2px); box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.center-item .serial-box { width:10px; height:10px; background:#0d4d6b; color:white; font-weight:600; border-radius:3px; display:flex; align-items:center; justify-content:center; margin-left:15px; flex-shrink:0; font-size:16px;}
+.center-item .center-name { flex-grow:1; word-break:break-word; }
+@media(max-width:600px){ .container{padding:20px 15px 30px 15px;} select{font-size:15px;} .center-item{font-size:15px;} .center-item .serial-box{width:20px; height:20px; font-size:14px;} }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>🏥 اختيار المحافظة → المدينة → عرض المراكز الطبية</h2>
-
-  <select id="governorate">
-    <option value="">اختر المحافظة</option>
-  </select>
-
-  <select id="city" disabled>
-    <option value="">اختر المدينة</option>
-  </select>
-
-  <div id="centersList"></div>
+<h4>🏥 عرض المراكز الطبية</h4>
+<select id="governorate"><option value="">اختر المحافظة</option></select>
+<select id="city" disabled><option value="">اختر المديرية</option></select>
+<div id="centersList"></div>
 </div>
 
 <script>
-// معرّف الشيت من الرابط
-const SHEET_ID = "14cGLg2rMmRlqpxexbpBxzfvmcXVRvj6HOGW7A6YTTXw";
+const SHEET_ID = "1OZFj2TPLngq23Gr9p1AWrBxI_vh_LjZrwn1sOmps8Bo";
 const SHEET_NAME = "Sheet1";
-
 const URL = https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME};
 
 fetch(URL)
-  .then(res => res.text())
-  .then(data => {
+.then(res => res.text())
+.then(data => {
     const json = JSON.parse(data.substr(47).slice(0, -2));
-    const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
-    
-    rows.shift(); // إزالة صف العناوين
+    const rows = json.table.rows
+        .map(r => [
+            r.c[0]?.v?.toString().trim() || "",
+            r.c[1]?.v?.toString().trim() || "",
+            r.c[2]?.v?.toString().trim() || ""
+        ])
+        .filter(r => r.some(cell => cell !== "")); // تجاهل الصفوف الفارغة
 
-    const clean = str => (str || "").toString().trim();
+    // إزالة صف العناوين إذا موجود
+    if(rows[0] && rows[0][0].toLowerCase() === "governorate") rows.shift();
 
-    const dataList = rows.map(r => ({
-      governorate: clean(r[0]),
-      city: clean(r[1]),
-      center: clean(r[2])
-    }));
+    const dataList = rows.map(r=>({governorate:r[0], city:r[1], center:r[2]}));
 
     const govSelect = document.getElementById("governorate");
     const citySelect = document.getElementById("city");
     const centersDiv = document.getElementById("centersList");
 
-    // تعبئة المحافظات بدون تكرار
-    const governorates = [...new Set(dataList.map(d => d.governorate))].sort();
-    governorates.forEach(g => {
-      const opt = document.createElement("option");
-      opt.value = g;
-      opt.textContent = g;
-      govSelect.appendChild(opt);
+    // تعبئة قائمة المحافظات بدون تكرار
+    const governorates = [...new Set(dataList.map(d=>d.governorate))].sort();
+    governorates.forEach(g=>{
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = g;
+        govSelect.appendChild(opt);
     });
 
     // عند اختيار المحافظة
-    govSelect.addEventListener("change", () => {
-      const selectedGov = govSelect.value;
-      citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-      centersDiv.innerHTML = "";
-      
-      if (!selectedGov) {
-        citySelect.disabled = true;
-        return;
-      }
+    govSelect.addEventListener("change", ()=>{
+        const selectedGov = govSelect.value;
+        citySelect.innerHTML='<option value="">اختر المديرية</option>';
+        centersDiv.innerHTML="";
+        if(!selectedGov){ citySelect.disabled=true; return; }
 
-      const cities = [...new Set(
-        dataList.filter(d => d.governorate === selectedGov).map(d => d.city)
-      )].sort();
-
-      cities.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c;
-        citySelect.appendChild(opt);
-      });
-
-      citySelect.disabled = false;
+        // جلب المدن التابعة للمحافظة بدون تكرار
+        const cities=[...new Set(dataList.filter(d=>d.governorate===selectedGov).map(d=>d.city))].sort();
+        cities.forEach(c=>{
+            const opt=document.createElement("option");
+            opt.value=c;
+            opt.textContent=c;
+            citySelect.appendChild(opt);
+        });
+        citySelect.disabled=false;
     });
 
     // عند اختيار المدينة
-    citySelect.addEventListener("change", () => {
-      const selectedGov = govSelect.value;
-      const selectedCity = citySelect.value;
-      centersDiv.innerHTML = "";
+    citySelect.addEventListener("change", ()=>{
+        const selectedGov=govSelect.value;
+        const selectedCity=citySelect.value;
+        centersDiv.innerHTML="";
+        if(!selectedCity) return;
 
-      if (!selectedCity) return;
+        const centers=dataList
+            .filter(d=>d.governorate===selectedGov && d.city===selectedCity)
+            .map(d=>d.center)
+            .filter(Boolean);
 
-      const centers = dataList
-        .filter(d => d.governorate === selectedGov && d.city === selectedCity)
-        .map(d => d.center);
+        if(centers.length===0){ centersDiv.innerHTML="<p>لا توجد مراكز لهذه المدينة.</p>"; return; }
 
-      if (centers.length === 0) {
-        centersDiv.innerHTML = "<p>لا توجد مراكز لهذه المدينة.</p>";
-        return;
-      }
+        centers.forEach((c,index)=>{
+            const div=document.createElement("div");
+            div.className="center-item";
 
-      // عرض المراكز مع الرقم التسلسلي في بطاقة ثابتة
-      centers.forEach((c, index) => {
-        const div = document.createElement("div");
-        div.className = "center-item";
+            const serialBox=document.createElement("div");
+            serialBox.className="serial-box";
+            serialBox.textContent=index+1;
 
-        const serialBox = document.createElement("div");
-        serialBox.className = "serial-box";
-        serialBox.textContent = index + 1;
+            const nameDiv=document.createElement("div");
+            nameDiv.className="center-name";
+            nameDiv.textContent=c;
 
-        const nameDiv = document.createElement("div");
-        nameDiv.className = "center-name";
-        nameDiv.textContent = c;
-
-        div.appendChild(nameDiv);
-        div.appendChild(serialBox);
-        centersDiv.appendChild(div);
-      });
+            div.appendChild(nameDiv);
+            div.appendChild(serialBox);
+            centersDiv.appendChild(div);
+        });
     });
-  })
-  .catch(err => {
-    console.error("حدث خطأ أثناء تحميل البيانات:", err);
-  });
+
+})
+.catch(err=>console.error("خطأ في جلب البيانات:", err));
 </script>
 
 </body>
