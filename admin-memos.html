@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>نظام التعاميم</title>
+<title>نظام التعاميم - لوحة التحكم</title>
 <style>
 body{font-family:"Tajawal",sans-serif;background:#0f172a;color:#e2e8f0;padding:15px;}
 .container{max-width:600px;margin:auto;}
@@ -19,8 +19,9 @@ button:disabled{opacity:0.7;cursor:not-allowed;}
 </head>
 <body>
 <div class="container">
-  <h2>نظام التعاميم</h2>
+  <h2>لوحة التحكم - التعاميم</h2>
   <input type="text" id="title" placeholder="عنوان التعميم">
+  <input type="text" id="city" placeholder="المحافظة">
   <textarea id="content" rows="3" placeholder="محتوى التعميم"></textarea>
   <button id="addBtn">إضافة التعميم</button>
   <hr>
@@ -28,43 +29,49 @@ button:disabled{opacity:0.7;cursor:not-allowed;}
 </div>
 
 <script>
-const SCRIPT_ID = "AKfycbwZvptN5ADftcmgTykOBTGV1s4zBASbU6R37w8TyeuJOMY4KtwgoRfjs3RELJEYndYj";
+const SCRIPT_ID = "AKfycbzMcjE-lMKfbYZH1QeKYfWwbU1VykSH3y6Lgk6ixWCI9eMuOavqzOzKegkpa-Udm5b8";
 const API_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
 
 const $ = s=>document.querySelector(s);
-const $$ = s=>document.querySelectorAll(s);
 
 async function fetchMemos(){
-  const res = await fetch(API_URL);
-  const memos = await res.json();
-  const container = $('#memos');
-  container.innerHTML = '';
-  memos.forEach(m=>{
-    if(m.Status!=='Deleted'){
-      container.innerHTML += `
-      <div class="memo" id="memo-${m.ID}">
-        <b>${m.Title}</b> (${m.Date})<br>
-        <p>${m.Content}</p>
-        <button onclick="editMemo('${m.ID}')">تعديل</button>
-        <button onclick="deleteMemo('${m.ID}')">حذف</button>
-      </div>`;
-    }
-  });
+  try{
+    const res = await fetch(API_URL);
+    const memos = await res.json();
+    const container = $('#memos');
+    container.innerHTML = '';
+    memos.forEach(m=>{
+      if(m.Status!=='Deleted'){
+        container.innerHTML += `
+        <div class="memo" id="memo-${m.ID}">
+          <span style="float:left;font-weight:bold;color:#facc15;">${m.City}</span>
+          <b>${m.Title}</b> (${m.Date})<br>
+          <p>${m.Content}</p>
+          <button onclick="editMemo('${m.ID}')">تعديل</button>
+          <button onclick="deleteMemo('${m.ID}')">حذف</button>
+        </div>`;
+      }
+    });
+  }catch(err){
+    console.error(err);
+    $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
+  }
 }
 
 async function addMemo(){
   const title = $('#title').value.trim();
+  const city = $('#city').value.trim();
   const content = $('#content').value.trim();
-  if(!title || !content){ alert('الرجاء ملء العنوان والمحتوى'); return; }
+  if(!title || !content || !city){ alert('الرجاء ملء جميع الحقول'); return; }
   const date = new Date().toLocaleDateString();
-  const ID = Date.now(); // معرف فريد
+  const ID = Date.now();
   $('#addBtn').disabled = true;
   $('#addBtn').innerText = '🔍 جاري الإضافة...';
   await fetch(API_URL,{
     method:'POST',
-    body: JSON.stringify({action:'add', ID, Title:title, Content:content, Date:date})
+    body: JSON.stringify({action:'add', ID, Title:title, City:city, Content:content, Date:date})
   });
-  $('#title').value=''; $('#content').value='';
+  $('#title').value=''; $('#city').value=''; $('#content').value='';
   $('#addBtn').disabled = false;
   $('#addBtn').innerText = 'إضافة التعميم';
   fetchMemos();
@@ -73,12 +80,13 @@ async function addMemo(){
 async function editMemo(ID){
   const memo = document.getElementById(`memo-${ID}`);
   const title = prompt('عدل العنوان', memo.querySelector('b').innerText);
+  const city = prompt('عدل المحافظة', memo.querySelector('span')?.innerText || '');
   const content = prompt('عدل المحتوى', memo.querySelector('p').innerText);
-  if(title && content){
+  if(title && content && city){
     const date = new Date().toLocaleDateString();
     await fetch(API_URL,{
       method:'POST',
-      body: JSON.stringify({action:'edit', ID, Title:title, Content:content, Date:date})
+      body: JSON.stringify({action:'edit', ID, Title:title, City:city, Content:content, Date:date})
     });
     fetchMemos();
   }
