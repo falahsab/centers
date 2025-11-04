@@ -75,6 +75,10 @@ button:hover{background:#0891b2;}
   .memo{padding:10px;}
   .memo button{font-size:12px;padding:4px 8px;}
 }
+.memo div.content {
+  white-space: pre-line; /* يحافظ على الأسطر والفواصل */
+  margin-bottom:5px;
+}
 </style>
 </head>
 <body>
@@ -128,15 +132,15 @@ function renderMemos(city){
   const memosToShow = city==='all' ? allMemos : allMemos.filter(m=> m.City===city);
   memosToShow.forEach((m,i)=>{
     const color = titleColors[i % titleColors.length];
-    container.innerHTML += `
-      <div class="memo" id="memo-${m.ID}">
-  <span class="city">${m.City}</span>
-  <div><b style="color:${color};display:block;margin-bottom:5px;">${m.Title}</b></div>
-  <div style="color:#facc15;margin-bottom:5px;">${m.Date}</div>
-  <div>${m.Content}</div>
-  <button onclick="editMemo('${m.ID}','${m.Title}','${m.City}','${m.Content}')">تعديل</button>
-  <button onclick="deleteMemo('${m.ID}')">حذف</button>
-</div>`;
+container.innerHTML += `
+  <div class="memo" id="memo-${m.ID}">
+    <span class="city">${m.City}</span>
+    <div><b style="color:${color};display:block;margin-bottom:5px;">${m.Title}</b></div>
+    <div style="color:#facc15;margin-bottom:5px;">${m.Date}</div>
+    <div class="content" style="white-space:pre-line;">${m.Content}</div>
+    <button onclick="editMemo('${m.ID}','${encodeURIComponent(m.Title)}','${encodeURIComponent(m.City)}','${encodeURIComponent(m.Content)}')">تعديل</button>
+    <button onclick="deleteMemo('${m.ID}')">حذف</button>
+  </div>`;
   });
 }
 
@@ -194,13 +198,14 @@ async function saveEdit(){
 
 // تعبئة الحقول للتعديل
 function editMemo(ID, title, city, content){
-  $('#title').value = title;
-  $('#city').value = city;
-  $('#content').value = content;
+  $('#title').value = decodeURIComponent(title);
+  $('#city').value = decodeURIComponent(city);
+  $('#content').value = decodeURIComponent(content);
   editingID = ID;
   $('#addBtn').innerText = '💾 حفظ التعديل';
   $('#addBtn').onclick = saveEdit;
 }
+
 
 // حذف التعميم
 async function deleteMemo(ID){
