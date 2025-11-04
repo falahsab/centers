@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نظام التعاميم</title>
+<style>
+body{font-family:"Tajawal",sans-serif;background:#0f172a;color:#e2e8f0;padding:15px;}
+.container{max-width:600px;margin:auto;}
+h2{text-align:center;color:#06b6d4;}
+input,textarea,button{width:100%;margin:5px 0;padding:10px;border-radius:6px;border:none;}
+textarea{resize:none;}
+button{background:#06b6d4;color:white;cursor:pointer;font-weight:bold;}
+button:disabled{opacity:0.7;cursor:not-allowed;}
+.memo{background:#1e293b;padding:10px;margin:10px 0;border-radius:8px;}
+.memo p{margin:5px 0;}
+.memo button{width:auto;padding:5px 10px;margin-left:5px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>نظام التعاميم</h2>
+  <input type="text" id="title" placeholder="عنوان التعميم">
+  <textarea id="content" rows="3" placeholder="محتوى التعميم"></textarea>
+  <button id="addBtn">إضافة التعميم</button>
+  <hr>
+  <div id="memos"></div>
+</div>
+
+<script>
+const SCRIPT_ID = "AKfycbwZvptN5ADftcmgTykOBTGV1s4zBASbU6R37w8TyeuJOMY4KtwgoRfjs3RELJEYndYj";
+const API_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
+
+const $ = s=>document.querySelector(s);
+const $$ = s=>document.querySelectorAll(s);
+
+async function fetchMemos(){
+  const res = await fetch(API_URL);
+  const memos = await res.json();
+  const container = $('#memos');
+  container.innerHTML = '';
+  memos.forEach(m=>{
+    if(m.Status!=='Deleted'){
+      container.innerHTML += `
+      <div class="memo" id="memo-${m.ID}">
+        <b>${m.Title}</b> (${m.Date})<br>
+        <p>${m.Content}</p>
+        <button onclick="editMemo('${m.ID}')">تعديل</button>
+        <button onclick="deleteMemo('${m.ID}')">حذف</button>
+      </div>`;
+    }
+  });
+}
+
+async function addMemo(){
+  const title = $('#title').value.trim();
+  const content = $('#content').value.trim();
+  if(!title || !content){ alert('الرجاء ملء العنوان والمحتوى'); return; }
+  const date = new Date().toLocaleDateString();
+  const ID = Date.now(); // معرف فريد
+  $('#addBtn').disabled = true;
+  $('#addBtn').innerText = '🔍 جاري الإضافة...';
+  await fetch(API_URL,{
+    method:'POST',
+    body: JSON.stringify({action:'add', ID, Title:title, Content:content, Date:date})
+  });
+  $('#title').value=''; $('#content').value='';
+  $('#addBtn').disabled = false;
+  $('#addBtn').innerText = 'إضافة التعميم';
+  fetchMemos();
+}
+
+async function editMemo(ID){
+  const memo = document.getElementById(`memo-${ID}`);
+  const title = prompt('عدل العنوان', memo.querySelector('b').innerText);
+  const content = prompt('عدل المحتوى', memo.querySelector('p').innerText);
+  if(title && content){
+    const date = new Date().toLocaleDateString();
+    await fetch(API_URL,{
+      method:'POST',
+      body: JSON.stringify({action:'edit', ID, Title:title, Content:content, Date:date})
+    });
+    fetchMemos();
+  }
+}
+
+async function deleteMemo(ID){
+  if(confirm('هل تريد حذف هذا التعميم؟')){
+    await fetch(API_URL,{
+      method:'POST',
+      body: JSON.stringify({action:'delete', ID})
+    });
+    fetchMemos();
+  }
+}
+
+$('#addBtn').onclick = addMemo;
+fetchMemos();
+</script>
+</body>
+</html>
