@@ -130,12 +130,13 @@ function renderMemos(city){
     const color = titleColors[i % titleColors.length];
     container.innerHTML += `
       <div class="memo" id="memo-${m.ID}">
-        <span class="city">${m.City}</span>
-        <b style="color:${color}">${m.Title}</b> (${m.Date})<br>
-        <p>${m.Content}</p>
-        <button onclick="editMemo('${m.ID}','${m.Title}','${m.City}','${m.Content}')">تعديل</button>
-        <button onclick="deleteMemo('${m.ID}')">حذف</button>
-      </div>`;
+  <span class="city">${m.City}</span>
+  <div><b style="color:${color};display:block;margin-bottom:5px;">${m.Title}</b></div>
+  <div style="color:#facc15;margin-bottom:5px;">${m.Date}</div>
+  <div>${m.Content}</div>
+  <button onclick="editMemo('${m.ID}','${m.Title}','${m.City}','${m.Content}')">تعديل</button>
+  <button onclick="deleteMemo('${m.ID}')">حذف</button>
+</div>`;
   });
 }
 
