@@ -52,11 +52,11 @@ function renderMemos(city){
   memosToShow.forEach((m,i)=>{
     const color = titleColors[i % titleColors.length]; // لون متغير لكل عنوان
     container.innerHTML += `
-      <div class="memo">
-        <span class="city">${m.City}</span>
-        <b style="color:${color}">${m.Title}</b> (${m.Date})<br>
-        <p>${m.Content}</p>
-      </div>`;
+      <div class="memo" id="memo-${m.ID}">
+  <span class="city">${m.City}</span>
+  <div><b style="color:${color};display:block;margin-bottom:5px;">${m.Title}</b></div>
+  <div style="color:#facc15;margin-bottom:5px;">${m.Date}</div>
+  <div>${m.Content}</div>`;
   });
 }
 
