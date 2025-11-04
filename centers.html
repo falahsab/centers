@@ -17,7 +17,7 @@ select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); out
   flex-direction: row-reverse;
   align-items: center;
   background: #f0f8ff;
-  border-radius: 3px;
+  border-radius: 10px;
   padding: 6px 10px;       /* البطاقة أصغر */
   margin: 5px 0;
   font-size: 18px;          /* نص المركز أكبر */
@@ -32,7 +32,7 @@ select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); out
   background: #0d4d6b;
   color: white;
   font-weight: 700;         /* بولد */
-  border-radius: 5px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,17 +46,17 @@ select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); out
     padding:5px 8px;
   }
   .center-item .serial-box{
-    width:10px;
-    height:10px;
+    width:30px;
+    height:30px;
     font-size:12px;
   }
 }
 
 
 .center-item:hover { transform:translateY(-2px); box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-.center-item .serial-box { width:10px; height:10px; background:#0d4d6b; color:white; font-weight:600; border-radius:3px; display:flex; align-items:center; justify-content:center; margin-left:15px; flex-shrink:0; font-size:16px;}
+.center-item .serial-box { width:50px; height:50px; background:#0d4d6b; color:white; font-weight:600; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-left:15px; flex-shrink:0; font-size:16px;}
 .center-item .center-name { flex-grow:1; word-break:break-word; }
-@media(max-width:600px){ .container{padding:20px 15px 30px 15px;} select{font-size:15px;} .center-item{font-size:15px;} .center-item .serial-box{width:20px; height:20px; font-size:14px;} }
+@media(max-width:600px){ .container{padding:20px 15px 30px 15px;} select{font-size:15px;} .center-item{font-size:15px;} .center-item .serial-box{width:40px; height:40px; font-size:14px;} }
 </style>
 </head>
 <body>
@@ -71,7 +71,7 @@ select:focus { border-color:#0d4d6b; box-shadow:0 0 8px rgba(13,77,107,0.2); out
 <script>
 const SHEET_ID = "1OZFj2TPLngq23Gr9p1AWrBxI_vh_LjZrwn1sOmps8Bo";
 const SHEET_NAME = "Sheet1";
-const URL = https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME};
+const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
 
 fetch(URL)
 .then(res => res.text())
@@ -159,3 +159,6 @@ fetch(URL)
 
 </body>
 </html>
+
+
+
