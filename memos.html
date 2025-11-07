@@ -12,7 +12,6 @@ body {
   padding: 20px;
   margin: 0;
 }
-
 .container {
   max-width: 700px;
   margin: auto;
@@ -22,13 +21,11 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 25px;
 }
-
 h2 {
   text-align: center;
-  color: #059669; /* أخضر طبي هادئ */
+  color: #059669;
   margin-bottom: 20px;
 }
-
 select {
   padding: 10px;
   border-radius: 8px;
@@ -39,7 +36,6 @@ select {
   margin-bottom: 20px;
   font-size: 15px;
 }
-
 .memo {
   background: #ffffff;
   border-left: 6px solid #06b6d4;
@@ -50,35 +46,30 @@ select {
   box-shadow: 0 3px 6px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .memo:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.08);
 }
-
 .memo span.city {
   position: absolute;
   left: 15px;
   top: 15px;
   font-weight: bold;
-  color: #0ea5e9; /* أزرق صحي */
+  color: #0ea5e9;
   font-size: 14px;
 }
-
 .memo b {
   display: block;
   font-size: 17px;
   color: #0f766e;
   margin-bottom: 5px;
 }
-
 .memo .date {
   color: #10b981;
   font-size: 14px;
   margin-bottom: 8px;
   display: block;
 }
-
 .memo .content {
   white-space: pre-line;
   line-height: 1.7;
@@ -109,7 +100,7 @@ async function fetchMemos() {
     const memos = await res.json();
     allMemos = memos.filter(m => m.Status === 'Active');
     populateCities();
-    renderMemos('all');
+    renderMemos($('#cityFilter').value);
   } catch (err) {
     console.error(err);
     $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
@@ -135,6 +126,7 @@ function renderMemos(city) {
 function populateCities() {
   const cities = [...new Set(allMemos.map(m => m.City))];
   const select = $('#cityFilter');
+  select.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
   cities.forEach(c => {
     const option = document.createElement('option');
     option.value = c;
@@ -144,7 +136,16 @@ function populateCities() {
 }
 
 $('#cityFilter').addEventListener('change', e => renderMemos(e.target.value));
+
 fetchMemos();
+
+// === التحديث المباشر عند أي تعديل من لوحة التحكم ===
+window.addEventListener('storage', (e) => {
+  if(e.key === 'memos_updated') {
+    console.log("📡 تم استلام إشعار تحديث التعاميم");
+    fetchMemos(); // إعادة تحميل التعاميم تلقائيًا
+  }
+});
 </script>
 
 </body>
