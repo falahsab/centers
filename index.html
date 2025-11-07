@@ -84,22 +84,35 @@
 
   <!-- 🔹 شريط التبويبات -->
   <div class="tabs">
-    <div class="tab active" onclick="loadTab('https://falahsab.github.io/centers/centers.html', this)">🏢 المراكز</div>
-    <div class="tab" onclick="loadTab('https://falahsab.github.io/centers/trans0.html', this)">💸 الحوالات</div>
-    <div class="tab" onclick="loadTab('https://falahsab.github.io/centers/memos.html', this)">📜 التعميمات</div>
+    <div class="tab active">🏢 المراكز</div>
+    <div class="tab">💸 الحوالات</div>
+    <div class="tab">📜 التعميمات</div>
   </div>
 
   <!-- 🧩 محتوى التبويب -->
   <div id="content">
-    <iframe id="iframeContent" src="https://falahsab.github.io/centers/centers.html"></iframe>
+    <iframe src="https://falahsab.github.io/centers/centers.html"></iframe>
+    <iframe src="https://falahsab.github.io/centers/trans0.html" style="display:none"></iframe>
+    <iframe src="https://falahsab.github.io/centers/memos.html" style="display:none"></iframe>
   </div>
 
   <script>
-    function loadTab(url, element) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      element.classList.add('active');
-      document.getElementById('iframeContent').src = url;
-    }
+    const tabs = document.querySelectorAll('.tab');
+    const iframes = document.querySelectorAll('#content iframe');
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        // إزالة active من جميع التبويبات
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // إخفاء جميع iframes
+        iframes.forEach(f => f.style.display = 'none');
+
+        // عرض iframe التبويب المحدد
+        iframes[index].style.display = 'block';
+      });
+    });
   </script>
 
 </body>
