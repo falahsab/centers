@@ -7,11 +7,12 @@
 <style>
 body {
   font-family: "Tajawal", sans-serif;
-  background: #f3f4f6;
+  background: #f3f4f6; /* خلفية فاتحة مريحة */
   color: #1e293b;
   padding: 15px;
   margin: 0;
 }
+
 .container {
   max-width: 700px;
   margin: auto;
@@ -20,12 +21,18 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 20px;
 }
+
 h2 {
   text-align: center;
-  color: #0ea5e9;
+  color: #0ea5e9; /* أزرق تركوازي */
   margin-bottom: 20px;
 }
-input, textarea, button, select {
+
+/* الحقول */
+input,
+textarea,
+button,
+select {
   width: 100%;
   margin: 6px 0;
   padding: 12px;
@@ -35,12 +42,20 @@ input, textarea, button, select {
   box-sizing: border-box;
   transition: all 0.2s ease;
 }
-input:focus, textarea:focus, select:focus {
+
+input:focus,
+textarea:focus,
+select:focus {
   border-color: #0ea5e9;
   box-shadow: 0 0 6px rgba(14, 165, 233, 0.3);
   outline: none;
 }
-textarea { resize: none; }
+
+textarea {
+  resize: none;
+}
+
+/* الأزرار */
 button {
   background: #06b6d4;
   color: #fff;
@@ -49,8 +64,18 @@ button {
   transition: background 0.2s, transform 0.1s;
   border: none;
 }
-button:hover { background: #0ea5e9; transform: translateY(-1px); }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+button:hover {
+  background: #0ea5e9;
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* بطاقات التعاميم */
 .memo {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -61,15 +86,24 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   transition: all 0.2s ease;
 }
-.memo:hover { transform: scale(1.01); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-.memo p { margin: 5px 0; }
+
+.memo:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.memo p {
+  margin: 5px 0;
+}
+
 .memo span.city {
   position: absolute;
   left: 12px;
   top: 12px;
   font-weight: bold;
-  color: #10b981;
+  color: #10b981; /* أخضر هادئ */
 }
+
 .memo button {
   width: auto;
   padding: 6px 12px;
@@ -80,28 +114,46 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   color: #0f172a;
   border: 1px solid #cbd5e1;
 }
-.memo button:hover { background: #e2e8f0; }
+
+.memo button:hover {
+  background: #e2e8f0;
+}
+
+/* العنوان والتاريخ */
 .memo b {
   color: #0ea5e9;
   display: block;
   margin-bottom: 6px;
   font-size: 17px;
 }
+
 .memo div.content {
   white-space: pre-line;
   margin-bottom: 5px;
   color: #334155;
 }
+
+/* فاصل */
 hr {
   width: 100%;
   border: none;
   border-top: 1px solid #e2e8f0;
   margin: 20px 0;
 }
+
+/* للجوال */
 @media (max-width: 480px) {
-  input, textarea, button, select { font-size: 14px; padding: 10px; }
-  .memo { padding: 10px; }
-  .memo button { font-size: 12px; padding: 5px 8px; }
+  input, textarea, button, select {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .memo {
+    padding: 10px;
+  }
+  .memo button {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
 }
 </style>
 </head>
@@ -110,6 +162,7 @@ hr {
 <div class="container">
   <h2>لوحة التحكم - نظام التعاميم</h2>
 
+  <!-- الإدخال -->
   <input type="text" id="title" placeholder="عنوان التعميم">
   <input type="text" id="city" placeholder="المحافظة">
   <textarea id="content" rows="4" placeholder="محتوى التعميم"></textarea>
@@ -117,6 +170,7 @@ hr {
 
   <hr>
 
+  <!-- الفلترة -->
   <select id="cityFilter">
     <option value="all">كل المحافظات</option>
   </select>
@@ -132,14 +186,6 @@ const $ = s => document.querySelector(s);
 let allMemos = [];
 let editingID = null;
 const titleColors = ['#0ea5e9', '#06b6d4', '#10b981', '#3b82f6', '#f59e0b', '#a855f7'];
-
-// إرسال إشارة التحديث
-function notifyUpdate() {
-  try {
-    localStorage.setItem("memos_updated", Date.now());
-    console.log("📡 تم إرسال إشعار تحديث التعاميم");
-  } catch(e) { console.warn("تعذر إرسال الإشعار", e); }
-}
 
 // جلب التعاميم
 async function fetchMemos() {
@@ -203,7 +249,6 @@ async function addMemo() {
   $('#addBtn').disabled = false;
   $('#addBtn').innerText = '➕ إضافة التعميم';
   fetchMemos();
-  notifyUpdate(); // <== تحديث مباشر
 }
 
 // حفظ التعديل
@@ -224,7 +269,6 @@ async function saveEdit() {
   $('#addBtn').innerText = '➕ إضافة التعميم';
   $('#addBtn').onclick = addMemo;
   fetchMemos();
-  notifyUpdate(); // <== تحديث مباشر
 }
 
 // تعديل
@@ -242,7 +286,6 @@ async function deleteMemo(ID) {
   if (confirm('هل تريد حذف هذا التعميم؟')) {
     await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', ID }) });
     fetchMemos();
-    notifyUpdate(); // <== تحديث مباشر
   }
 }
 
