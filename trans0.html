@@ -3,42 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>بحث الحوالات</title>
 <style>
 body {
   font-family: "Tajawal", sans-serif;
   background: linear-gradient(180deg, #e0f7f4 0%, #f4fcfc 100%);
+  color: #1e293b;
+  padding: 20px;
   margin: 0;
-  text-align: center;
-  color: #0f172a;
 }
 
-/* العنوان */
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffffcc;
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 25px;
+  position: relative;
+}
+
 h2 {
+  text-align: center;
   color: #059669;
-  margin-bottom: 15px;
-  font-size: 22px;
+  margin-bottom: 20px;
 }
 
-/* 📦 مربع البحث */
+/* زر التحديث العائم */
+#refreshBtn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #06b6d4;
+  background: #ffffff;
+  color: #06b6d4;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+#refreshBtn:hover {
+  transform: scale(1.15);
+  background: #06b6d4;
+  color: #fff;
+}
+
+/* دوران عند الضغط */
+#refreshBtn.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* رسالة التحديث */
+#updateMsg {
+  position: fixed;
+  top: 15px;
+  left: 70px;
+  background: #0ea5e9;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* مربع البحث */
 .search-box {
   position: relative;
-  display: inline-block;
-  width: 90%;
-  max-width: 420px;
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .search-box input {
-  width: 80%;
+  width: 100%;
   padding: 12px 40px 12px 40px;
   border-radius: 10px;
   border: 1px solid #94e2cd;
   font-size: 17px;
   outline: none;
-  direction: rtl;
   background: #f0fdf4;
   transition: all 0.3s;
+  box-sizing: border-box;
 }
 
 .search-box input:focus {
@@ -46,63 +108,39 @@ h2 {
   box-shadow: 0 0 6px rgba(16,185,129,0.4);
 }
 
-/* 🔍 أيقونة البحث على اليمين */
-.search-box .icon-search {
+.icon-search, .icon-clear {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #34d399;
-  pointer-events: none;
-  width: 20px;
-  height: 20px;
-}
-
-/* ✖ أيقونة المسح على اليسار */
-.search-box .icon-clear {
-  position: absolute;
-  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
   cursor: pointer;
-  display: none;
-  color: #6b7280;
-  transition: color 0.2s;
 }
 
-.search-box .icon-clear:hover {
-  color: #ef4444;
-}
-
-.search-box .icon-clear svg,
-.search-box .icon-search svg {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
+.icon-search { right: 12px; color: #34d399; pointer-events: none; }
+.icon-clear { left: 12px; color: #6b7280; display: none; }
+.icon-clear:hover { color: #ef4444; }
+.icon-clear svg, .icon-search svg { width: 100%; height: 100%; fill: currentColor; }
 
 /* النتائج */
 #output {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
 }
 
-/* 🧾 البطاقات */
+/* البطاقات */
 .result {
   background: #ffffff;
   border-radius: 12px;
   padding: 15px 20px;
-  width: 80%;
-  max-width: 400px;
+  width: 100%;
   text-align: right;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   border-left: 5px solid #10b981;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .result:hover {
@@ -110,75 +148,69 @@ h2 {
   box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
-/* التنسيق الداخلي */
-.name {
-  font-weight: bold;
-  color: #0f766e;
-  font-size: 18px;
-}
+.name { font-weight: bold; color: #0f766e; font-size: 18px; }
+.info.num { color: #0284c7 !important; font-weight: bold; font-size: 17px; }
+.info { margin: 2px 0; color: #334155; }
 
-.info.num {
-  color: #0284c7 !important;
-  font-weight: bold;
-  font-size: 17px;
-}
-
-
-.info {
-  margin: 2px 0;
-  color: #334155;
-}
-
-/* 📱 متجاوب للجوال */
+/* متجاوب للجوال */
 @media (max-width: 480px) {
-  .search-box input {
-    font-size: 16px;
-    padding: 10px 35px 10px 35px;
-  }
-  .search-box .icon-search,
-  .search-box .icon-clear {
-    width: 16px;
-    height: 16px;
-  }
+  .container { padding: 15px; margin-top: 100px; }
+  #refreshBtn { width: 40px; height: 40px; font-size: 16px; }
+  #updateMsg { font-size: 13px; left: 65px; padding: 5px 10px; }
+  .search-box input { font-size: 16px; padding: 10px 35px 10px 35px; }
+  .icon-search, .icon-clear { width: 16px; height: 16px; }
+  .result .name { font-size: 16px; }
+  .result .info.num { font-size: 16px; }
+  .result .info { font-size: 14px; }
 }
 </style>
 </head>
 <body>
 
-<h2>🩺 البحث عن حوالة مستفيد</h2>
+<div class="container">
+  <h2>🩺 البحث عن حوالة مستفيد</h2>
 
-<div class="search-box">
-  <!-- أيقونة البحث على اليمين -->
-  <span class="icon-search">
-    <svg viewBox="0 0 16 16" fill="currentColor">
-      <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"></path>
-    </svg>
-  </span>
+  <div class="search-box">
+    <span class="icon-search">
+      <svg viewBox="0 0 16 16" fill="currentColor">
+        <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"></path>
+      </svg>
+    </span>
+    <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
+    <span class="icon-clear" id="clearBtn">
+      <svg viewBox="0 0 16 16" fill="currentColor">
+        <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"></path>
+      </svg>
+    </span>
+  </div>
 
-  <!-- مربع الإدخال -->
-  <input type="text" id="search" placeholder="اكتب الاسم أو رقم الجوال...">
-
-  <!-- أيقونة المسح على اليسار -->
-  <span class="icon-clear" id="clearBtn">
-    <svg viewBox="0 0 16 16" fill="currentColor">
-      <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"></path>
-    </svg>
-  </span>
+  <div id="output">⏳ جارٍ تحميل البيانات...</div>
+  <button id="refreshBtn" title="تحديث">&#x21bb;</button>
+<div id="updateMsg">✅ تم التحديث</div>
 </div>
 
-<div id="output">⏳ جارٍ تحميل البيانات...</div>
+
 
 <script>
 const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
 const sheetNames = ["Sheet1","Sheet2"];
 let rows = [];
 
-// تحميل البيانات من جميع الشيتات
-Promise.all(sheetNames.map(name => {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
-  return fetch(url)
-    .then(res => res.text())
-    .then(csv => {
+const search = document.getElementById("search");
+const clearBtn = document.getElementById("clearBtn");
+const output = document.getElementById("output");
+const refreshBtn = document.getElementById("refreshBtn");
+const updateMsg = document.getElementById("updateMsg");
+
+async function loadData(){
+  refreshBtn.classList.add("loading");
+  output.innerHTML = "⏳ جارٍ تحميل البيانات...";
+  rows = [];
+  try{
+    await Promise.all(sheetNames.map(async name=>{
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+      const res = await fetch(url);
+      const csv = await res.text();
       const lines = csv.trim().split(/\r?\n/);
       const headers = lines[0].replace(/"/g,"").split(",");
       for (let i=1;i<lines.length;i++){
@@ -188,28 +220,32 @@ Promise.all(sheetNames.map(name => {
         obj.sheet = name;
         rows.push(obj);
       }
-    });
-}))
-.then(() => document.getElementById("output").innerHTML = `✅ تم تحميل ${rows.length} حوالة`)
-.catch(err => document.getElementById("output").innerHTML = `❌ خطأ: ${err}`);
+    }));
+    output.innerHTML = `✅ تم تحميل ${rows.length} حوالة`;
+    showUpdateMsg();
+  }catch(e){
+    output.innerHTML = `❌ خطأ: ${e}`;
+  }
+  refreshBtn.classList.remove("loading");
+}
 
-// عناصر DOM
-const search = document.getElementById("search");
-const clearBtn = document.getElementById("clearBtn");
-const output = document.getElementById("output");
+refreshBtn.addEventListener("click", loadData);
 
-// تأخير البحث (debounce)
+function showUpdateMsg(){
+  updateMsg.style.opacity = 1;
+  setTimeout(()=>{ updateMsg.style.opacity = 0; }, 2000);
+}
+
 let debounceTimer;
 search.addEventListener("input", function(){
   clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => performSearch(this.value), 300);
+  debounceTimer = setTimeout(()=>performSearch(this.value),300);
 });
 
-// البحث
 function performSearch(query){
   const k = query.trim().toLowerCase();
   clearBtn.style.display = k ? "block" : "none";
-  if (!k) { output.innerHTML = ""; return; }
+  if(!k){ output.innerHTML=""; return; }
 
   const matches = rows.filter(r =>
     (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
@@ -217,7 +253,7 @@ function performSearch(query){
   );
 
   if(matches.length){
-    output.innerHTML = matches.map(s => `
+    output.innerHTML = matches.map(s=>`
       <div class="result">
         <div class="name">👤 الاسم: ${s.name}</div>
         <div class="info">📱 الجوال: ${s.mob}</div>
@@ -230,24 +266,23 @@ function performSearch(query){
   }
 }
 
-// مسح النص
-clearBtn.addEventListener("click", () => {
-  search.value = "";
-  clearBtn.style.display = "none";
-  output.innerHTML = "";
+clearBtn.addEventListener("click", ()=>{
+  search.value="";
+  clearBtn.style.display="none";
+  output.innerHTML="";
   search.focus();
 });
 
-// تطبيع الأحرف العربية
 function normalizeArabic(str){
-  return str
-    .toLowerCase()
-    .replace(/[\u064B-\u065F]/g, "")
-    .replace(/[أإآا]/g, "ا")
-    .replace(/ى/g, "ي")
-    .replace(/ة/g, "ه")
-    .replace(/\s+/g, "");
+  return str.toLowerCase()
+    .replace(/[\u064B-\u065F]/g,"")
+    .replace(/[أإآا]/g,"ا")
+    .replace(/ى/g,"ي")
+    .replace(/ة/g,"ه")
+    .replace(/\s+/g,"");
 }
+
+loadData();
 </script>
 
 </body>
