@@ -5,18 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>التعاميم - الموظفين</title>
 <style>
-body{font-family:"Tajawal",sans-serif;background:#0f172a;color:#e2e8f0;padding:15px;}
-.container{max-width:700px;margin:auto;}
-h2{text-align:center;color:#06b6d4;}
-.memo{background:#1e293b;padding:10px;margin:10px 0;border-radius:8px;position:relative;}
-.memo p{margin:5px 0;}
-.memo span.city{position:absolute;left:10px;top:10px;font-weight:bold;color:#facc15;}
-select{padding:8px;border-radius:6px;border:none;margin-bottom:15px;width:100%;}
+body {
+  font-family: "Tajawal", sans-serif;
+  background: linear-gradient(180deg, #e0f7f4 0%, #f4fcfc 100%);
+  color: #1e293b;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffffcc;
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 25px;
+}
+
+h2 {
+  text-align: center;
+  color: #059669; /* أخضر طبي هادئ */
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #a7f3d0;
+  background: #ecfdf5;
+  color: #064e3b;
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.memo {
+  background: #ffffff;
+  border-left: 6px solid #06b6d4;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.memo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.memo span.city {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  font-weight: bold;
+  color: #0ea5e9; /* أزرق صحي */
+  font-size: 14px;
+}
+
+.memo b {
+  display: block;
+  font-size: 17px;
+  color: #0f766e;
+  margin-bottom: 5px;
+}
+
+.memo .date {
+  color: #10b981;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.memo .content {
+  white-space: pre-line;
+  line-height: 1.7;
+  color: #334155;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
-  <h2>التعاميم</h2>
+  <h2>🩺 التعاميم </h2>
   <select id="cityFilter">
     <option value="all">كل المحافظات</option>
   </select>
@@ -26,45 +99,43 @@ select{padding:8px;border-radius:6px;border:none;margin-bottom:15px;width:100%;}
 <script>
 const SCRIPT_ID = "AKfycbzMcjE-lMKfbYZH1QeKYfWwbU1VykSH3y6Lgk6ixWCI9eMuOavqzOzKegkpa-Udm5b8";
 const API_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
-const $ = s=>document.querySelector(s);
+const $ = s => document.querySelector(s);
 
 let allMemos = [];
-// مجموعة ألوان للعناوين
-const titleColors = ['#f87171','#60a5fa','#34d399','#facc15','#a78bfa','#f472b6'];
 
-async function fetchMemos(){
-  try{
+async function fetchMemos() {
+  try {
     const res = await fetch(API_URL);
     const memos = await res.json();
-    allMemos = memos.filter(m=> m.Status === 'Active');
+    allMemos = memos.filter(m => m.Status === 'Active');
     populateCities();
     renderMemos('all');
-  }catch(err){
+  } catch (err) {
     console.error(err);
     $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
   }
 }
 
-function renderMemos(city){
+function renderMemos(city) {
   const container = $('#memos');
   container.innerHTML = '';
-  const memosToShow = city==='all' ? allMemos : allMemos.filter(m=> m.City===city);
-  memosToShow.forEach((m,i)=>{
-    const color = titleColors[i % titleColors.length]; // لون متغير لكل عنوان
+  const memosToShow = city === 'all' ? allMemos : allMemos.filter(m => m.City === city);
+  memosToShow.forEach(m => {
     container.innerHTML += `
       <div class="memo" id="memo-${m.ID}">
-  <span class="city">${m.City}</span>
-  <div><b style="color:${color};display:block;margin-bottom:5px;">${m.Title}</b></div>
-  <div style="color:#facc15;margin-bottom:5px;">${m.Date}</div>
-  <div class="content" style="white-space:pre-line;">${m.Content}</div>
-</div>`;
+        <span class="city">${m.City}</span>
+        <b>${m.Title}</b>
+        <span class="date">${m.Date}</span>
+        <div class="content">${m.Content}</div>
+      </div>
+    `;
   });
 }
 
-function populateCities(){
-  const cities = [...new Set(allMemos.map(m=>m.City))];
+function populateCities() {
+  const cities = [...new Set(allMemos.map(m => m.City))];
   const select = $('#cityFilter');
-  cities.forEach(c=>{
+  cities.forEach(c => {
     const option = document.createElement('option');
     option.value = c;
     option.textContent = c;
@@ -72,11 +143,9 @@ function populateCities(){
   });
 }
 
-$('#cityFilter').addEventListener('change', e=>{
-  renderMemos(e.target.value);
-});
-
+$('#cityFilter').addEventListener('change', e => renderMemos(e.target.value));
 fetchMemos();
 </script>
+
 </body>
 </html>
