@@ -31,7 +31,7 @@ h2 {
   position: relative;
 }
 
-/* زر التحديث */
+/* زر التحديث العائم */
 #refreshBtn {
   position: absolute;
   top: 20px;
@@ -55,6 +55,16 @@ h2 {
   transform: scale(1.15);
   background: #06b6d4;
   color: #fff;
+}
+
+/* دوران عند التحميل */
+#refreshBtn.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* رسالة التحديث */
@@ -133,6 +143,7 @@ select {
 <body>
 
 <div class="container">
+  <!-- زر التحديث -->
   <button id="refreshBtn" title="تحديث">&#x21bb;</button>
   <div id="updateMsg">✅ تم التحديث</div>
 
@@ -151,6 +162,8 @@ const $ = s => document.querySelector(s);
 let allMemos = [];
 
 async function fetchMemos() {
+  const btn = $('#refreshBtn');
+  btn.classList.add('loading'); // يبدأ الدوران
   try {
     const res = await fetch(API_URL);
     const memos = await res.json();
@@ -161,6 +174,8 @@ async function fetchMemos() {
   } catch (err) {
     console.error(err);
     $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
+  } finally {
+    btn.classList.remove('loading'); // إيقاف الدوران
   }
 }
 
