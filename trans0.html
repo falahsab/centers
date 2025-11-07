@@ -6,43 +6,44 @@
 
 <title>بحث الحوالات</title>
 <style>
- 
 body {
   font-family: "Tajawal", sans-serif;
-  background: #f3f4f6;
+  background: linear-gradient(180deg, #e0f7f4 0%, #f4fcfc 100%);
   margin: 0;
-  
   text-align: center;
+  color: #0f172a;
 }
 
+/* العنوان */
 h2 {
-  color: #333;
-  margin-bottom: 10px;
+  color: #059669;
+  margin-bottom: 15px;
+  font-size: 22px;
 }
 
 /* 📦 مربع البحث */
 .search-box {
   position: relative;
   display: inline-block;
- width: 90%;
+  width: 90%;
   max-width: 420px;
 }
 
 .search-box input {
- width: 80%;
-  padding: 12px 40px 12px 40px; /* padding-left = أيقونة المسح */
+  width: 80%;
+  padding: 12px 40px 12px 40px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #94e2cd;
   font-size: 17px;
   outline: none;
   direction: rtl;
-  transition: all 0.2s;
+  background: #f0fdf4;
+  transition: all 0.3s;
 }
 
 .search-box input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0,123,255,0.4);
-   
+  border-color: #10b981;
+  box-shadow: 0 0 6px rgba(16,185,129,0.4);
 }
 
 /* 🔍 أيقونة البحث على اليمين */
@@ -51,7 +52,7 @@ h2 {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #999;
+  color: #34d399;
   pointer-events: none;
   width: 20px;
   height: 20px;
@@ -67,12 +68,12 @@ h2 {
   height: 20px;
   cursor: pointer;
   display: none;
-  color: #999;
+  color: #6b7280;
   transition: color 0.2s;
 }
 
 .search-box .icon-clear:hover {
-  color: #ff4d4f;
+  color: #ef4444;
 }
 
 .search-box .icon-clear svg,
@@ -91,19 +92,42 @@ h2 {
   gap: 15px;
 }
 
+/* 🧾 البطاقات */
 .result {
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   padding: 15px 20px;
- width: 80%;
+  width: 80%;
   max-width: 400px;
   text-align: right;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border-left: 5px solid #10b981;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.name { font-weight: bold; color: #007bff; font-size: 18px; }
-.num { color: red; font-weight: bold; }
-.info { margin: 2px 0; }
+.result:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+/* التنسيق الداخلي */
+.name {
+  font-weight: bold;
+  color: #0f766e;
+  font-size: 18px;
+}
+
+.info.num {
+  color: #0284c7 !important;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+
+.info {
+  margin: 2px 0;
+  color: #334155;
+}
 
 /* 📱 متجاوب للجوال */
 @media (max-width: 480px) {
@@ -121,7 +145,7 @@ h2 {
 </head>
 <body>
 
-<h2>🔍 البحث عن حوالة مستفيد</h2>
+<h2>🩺 البحث عن حوالة مستفيد</h2>
 
 <div class="search-box">
   <!-- أيقونة البحث على اليمين -->
@@ -174,7 +198,7 @@ const search = document.getElementById("search");
 const clearBtn = document.getElementById("clearBtn");
 const output = document.getElementById("output");
 
-// debounce لتأخير البحث
+// تأخير البحث (debounce)
 let debounceTimer;
 search.addEventListener("input", function(){
   clearTimeout(debounceTimer);
@@ -214,7 +238,7 @@ clearBtn.addEventListener("click", () => {
   search.focus();
 });
 
-// تطبيع العربية
+// تطبيع الأحرف العربية
 function normalizeArabic(str){
   return str
     .toLowerCase()
@@ -222,16 +246,9 @@ function normalizeArabic(str){
     .replace(/[أإآا]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")
-    .replace(/\s+/g, ""); // إزالة المسافات
+    .replace(/\s+/g, "");
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
