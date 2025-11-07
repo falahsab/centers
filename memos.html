@@ -103,21 +103,19 @@ const $ = s => document.querySelector(s);
 
 let allMemos = [];
 
-// جلب التعاميم
 async function fetchMemos() {
   try {
     const res = await fetch(API_URL);
     const memos = await res.json();
     allMemos = memos.filter(m => m.Status === 'Active');
     populateCities();
-    renderMemos($('#cityFilter').value);
+    renderMemos('all');
   } catch (err) {
     console.error(err);
     $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
   }
 }
 
-// عرض البطاقات
 function renderMemos(city) {
   const container = $('#memos');
   container.innerHTML = '';
@@ -134,14 +132,9 @@ function renderMemos(city) {
   });
 }
 
-// تعبئة المحافظات
 function populateCities() {
   const cities = [...new Set(allMemos.map(m => m.City))];
   const select = $('#cityFilter');
-  
-  // إزالة الخيارات القديمة ما عدا "كل المحافظات"
-  select.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
-  
   cities.forEach(c => {
     const option = document.createElement('option');
     option.value = c;
@@ -151,11 +144,7 @@ function populateCities() {
 }
 
 $('#cityFilter').addEventListener('change', e => renderMemos(e.target.value));
-
-// **تحديث تلقائي كل 5 ثواني**
-fetchMemos(); // تحميل أولي
-setInterval(fetchMemos, 5000);
-
+fetchMemos();
 </script>
 
 </body>
