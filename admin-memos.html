@@ -191,7 +191,7 @@ addBtn.onclick = async ()=>{
   if(!title||!city||!content){ alert('الرجاء ملء جميع الحقول'); return; }
   const date = new Date().toLocaleDateString();
   const ID = Date.now();
-  addBtn.disabled=true; addBtn.innerText='⏳ جاري الإضافة...';
+  addBtn.disabled=true; addBtn.innerText='⏳ جاري نشر التعميم...';
   await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'add',ID,Title:title,City:city,Content:content,Date:date})});
   $('#title').value=''; $('#city').value=''; $('#content').value='';
   addBtn.disabled=false; addBtn.innerText='📤 نشر التعميم';
