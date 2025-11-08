@@ -5,172 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>نظام التعاميم - لوحة التحكم</title>
 <style>
-body {
-  font-family: "Tajawal", sans-serif;
-  background: #f3f4f6; /* خلفية فاتحة مريحة */
-  color: #1e293b;
-  padding: 15px;
-  margin: 0;
-}
-
-.container {
-  max-width: 700px;
-  margin: auto;
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-}
-
-h2 {
-  text-align: center;
-  color: #0ea5e9; /* أزرق تركوازي */
-  margin-bottom: 20px;
-}
-
-/* الحقول */
-input,
-textarea,
-button,
-select {
-  width: 100%;
-  margin: 6px 0;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 6px rgba(14, 165, 233, 0.3);
-  outline: none;
-}
-
-textarea {
-  resize: none;
-}
-
-/* الأزرار */
-button {
-  background: #06b6d4;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-  border: none;
-}
-
-button:hover {
-  background: #0ea5e9;
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* بطاقات التعاميم */
-.memo {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 15px;
-  margin: 12px 0;
-  position: relative;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
-}
-
-.memo:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.memo p {
-  margin: 5px 0;
-}
-
-.memo span.city {
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  font-weight: bold;
-  color: #10b981; /* أخضر هادئ */
-}
-
-.memo button {
-  width: auto;
-  padding: 6px 12px;
-  margin-left: 5px;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #f1f5f9;
-  color: #0f172a;
-  border: 1px solid #cbd5e1;
-}
-
-.memo button:hover {
-  background: #e2e8f0;
-}
-
-/* العنوان والتاريخ */
-.memo b {
-  color: #0ea5e9;
-  display: block;
-  margin-bottom: 6px;
-  font-size: 17px;
-}
-
-.memo div.content {
-  white-space: pre-line;
-  margin-bottom: 5px;
-  color: #334155;
-}
-
-/* فاصل */
-hr {
-  width: 100%;
-  border: none;
-  border-top: 1px solid #e2e8f0;
-  margin: 20px 0;
-}
-
-/* للجوال */
-@media (max-width: 480px) {
-  input, textarea, button, select {
-    font-size: 14px;
-    padding: 10px;
-  }
-  .memo {
-    padding: 10px;
-  }
-  .memo button {
-    font-size: 12px;
-    padding: 5px 8px;
-  }
-}
+body { font-family: "Tajawal", sans-serif; background: #f3f4f6; color: #1e293b; padding: 15px; margin: 0; }
+.container { max-width: 700px; margin: auto; background: #ffffff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 20px; }
+h2 { text-align: center; color: #0ea5e9; margin-bottom: 20px; }
+input, textarea, button, select { width: 100%; margin: 6px 0; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 16px; box-sizing: border-box; transition: all 0.2s ease; }
+input:focus, textarea:focus, select:focus { border-color: #0ea5e9; box-shadow: 0 0 6px rgba(14,165,233,0.3); outline: none; }
+textarea { resize: none; white-space: pre-wrap; }
+button { background: #06b6d4; color: #fff; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.1s; border: none; }
+button:hover { background: #0ea5e9; transform: translateY(-1px); }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+.memo { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin: 12px 0; position: relative; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: all 0.2s ease; }
+.memo:hover { transform: scale(1.01); box-shadow:0 4px 10px rgba(0,0,0,0.08); }
+.memo span.city { position:absolute; left:12px; top:12px; font-weight:bold; color:#10b981; }
+.memo .actions button { width:auto; padding:6px 12px; margin-left:5px; border-radius:8px; font-size:14px; background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; }
+.memo .actions button:hover { background:#e2e8f0; }
+.memo .title { font-size:17px; font-weight:bold; margin-bottom:6px; }
+.memo .content { white-space: pre-line; margin-bottom:5px; color:#334155; }
+hr { width:100%; border:none; border-top:1px solid #e2e8f0; margin:20px 0; }
+@media (max-width:480px) { input, textarea, button, select { font-size:14px; padding:10px; } .memo { padding:10px; } .memo .actions button { font-size:12px; padding:5px 8px; } }
+.success-msg { background:#d1fae5; color:#065f46; padding:10px; border-radius:8px; margin-bottom:10px; display:none; }
+#newMemoForm { display:none; margin-bottom:10px; }
 </style>
 </head>
-
 <body>
 <div class="container">
   <h2>لوحة التحكم - نظام التعاميم</h2>
 
-  <!-- الإدخال -->
-  <input type="text" id="title" placeholder="عنوان التعميم">
-  <input type="text" id="city" placeholder="المحافظة">
-  <textarea id="content" rows="4" placeholder="محتوى التعميم"></textarea>
-  <button id="addBtn">➕ إضافة التعميم</button>
+  <div class="success-msg" id="msg"></div>
+
+  <button id="showAddBtn">➕ إضافة تعميم جديد</button>
+
+  <div id="newMemoForm">
+    <input type="text" id="title" placeholder="عنوان التعميم">
+    <input type="text" id="city" placeholder="المحافظة">
+    <textarea id="content" rows="4" placeholder="محتوى التعميم"></textarea>
+    <button id="addBtn">📤 نشر التعميم</button>
+    <button id="cancelAdd" style="background:#f87171; margin-top:5px;">❌ إلغاء</button>
+  </div>
 
   <hr>
 
-  <!-- الفلترة -->
   <select id="cityFilter">
     <option value="all">كل المحافظات</option>
   </select>
@@ -182,116 +56,148 @@ hr {
 const SCRIPT_ID = "AKfycbyNpX3ItLXn_U2uiMKrmZk983VjIj0SqHi337d79KCujF85wzpwDQKBz65_qxi26-0";
 const API_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
 const $ = s => document.querySelector(s);
+let allMemos=[];
+const titleColors = ['#0ea5e9','#06b6d4','#10b981','#3b82f6','#f59e0b','#a855f7'];
 
-let allMemos = [];
-let editingID = null;
-const titleColors = ['#0ea5e9', '#06b6d4', '#10b981', '#3b82f6', '#f59e0b', '#a855f7'];
+function showMsg(text){ const el=$('#msg'); el.innerText=text; el.style.display='block'; setTimeout(()=>el.style.display='none',2000); }
 
-// جلب التعاميم
-async function fetchMemos() {
-  try {
+async function fetchMemos(){
+  try{
     const res = await fetch(API_URL);
     const memos = await res.json();
-    allMemos = memos.filter(m => m.Status !== 'Deleted');
+    allMemos = memos.filter(m=>m.Status!=='Deleted');
     populateCities();
     renderMemos($('#cityFilter').value);
-  } catch (err) {
-    console.error(err);
-    $('#memos').innerHTML = `<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`;
-  }
+  } catch(err){ console.error(err); $('#memos').innerHTML=`<p>⚠️ حدث خطأ أثناء جلب التعاميم</p>`; }
 }
 
-// عرض البطاقات
-function renderMemos(city) {
-  const container = $('#memos');
-  container.innerHTML = '';
-  const memosToShow = city === 'all' ? allMemos : allMemos.filter(m => m.City === city);
-  memosToShow.forEach((m, i) => {
-    const color = titleColors[i % titleColors.length];
-    container.innerHTML += `
-      <div class="memo" id="memo-${m.ID}">
-        <span class="city">${m.City}</span>
-        <div><b style="color:${color}">${m.Title}</b></div>
-        <div style="color:#64748b;margin-bottom:5px;">📅 ${m.Date}</div>
-        <div class="content">${m.Content}</div>
-        <button onclick="editMemo('${m.ID}','${encodeURIComponent(m.Title)}','${encodeURIComponent(m.City)}','${encodeURIComponent(m.Content)}')">✏️ تعديل</button>
-        <button onclick="deleteMemo('${m.ID}')">🗑️ حذف</button>
-      </div>`;
+function renderMemos(city){
+  const container=$('#memos'); container.innerHTML='';
+  const memosToShow=city==='all'?allMemos:allMemos.filter(m=>m.City===city);
+
+  memosToShow.forEach((m,i)=>{
+    const color=titleColors[i%titleColors.length];
+    const memoDiv=document.createElement('div'); memoDiv.className='memo'; memoDiv.id=`memo-${m.ID}`;
+    memoDiv.innerHTML=`
+      <span class="city">${m.City}</span>
+      <div class="title" style="color:${color}">${m.Title}</div>
+      <div style="color:#64748b;margin-bottom:5px;">📅 ${m.Date}</div>
+      <div class="content">${m.Content}</div>
+      <div class="actions" style="margin-top:8px;">
+        <button class="editBtn">✏️ تعديل</button>
+        <button class="deleteBtn">🗑️ حذف</button>
+      </div>
+    `;
+
+    const editBtn = memoDiv.querySelector('.editBtn');
+    const deleteBtn = memoDiv.querySelector('.deleteBtn');
+
+    function setupEdit(){
+      if(memoDiv.dataset.editing==='true') return;
+      memoDiv.dataset.editing='true';
+      const titleDiv = memoDiv.querySelector('.title');
+      const contentDiv = memoDiv.querySelector('.content');
+      const citySpan = memoDiv.querySelector('.city');
+
+      const titleInput = document.createElement('input'); titleInput.value=m.Title;
+      const cityInput = document.createElement('input'); cityInput.value=m.City;
+      const contentTextarea = document.createElement('textarea'); contentTextarea.value=m.Content;
+      contentTextarea.style.width='100%';
+      contentTextarea.style.minHeight='80px';
+      contentTextarea.style.whiteSpace='pre-wrap';
+      contentTextarea.style.resize='vertical';
+      contentTextarea.addEventListener('input', ()=>{ contentTextarea.style.height='auto'; contentTextarea.style.height=contentTextarea.scrollHeight+'px'; });
+      contentTextarea.style.height=contentTextarea.scrollHeight+'px';
+
+      titleDiv.replaceWith(titleInput);
+      citySpan.replaceWith(cityInput);
+      contentDiv.replaceWith(contentTextarea);
+
+      editBtn.innerText='💾 حفظ';
+      const cancelBtn=document.createElement('button'); cancelBtn.innerText='❌ إلغاء';
+      cancelBtn.style.marginLeft='5px'; editBtn.after(cancelBtn);
+
+      editBtn.onclick = async ()=>{
+        const updatedTitle = titleInput.value.trim();
+        const updatedCity = cityInput.value.trim();
+        const updatedContent = contentTextarea.value.trim();
+        if(!updatedTitle||!updatedCity||!updatedContent){ alert('الرجاء ملء جميع الحقول'); return; }
+        const date = new Date().toLocaleDateString();
+        await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'edit',ID:m.ID,Title:updatedTitle,City:updatedCity,Content:updatedContent,Date:date})});
+        m.Title=updatedTitle; m.City=updatedCity; m.Content=updatedContent; m.Date=date;
+        titleInput.replaceWith(createDiv('title',updatedTitle,color));
+        cityInput.replaceWith(createSpan('city',updatedCity));
+        contentTextarea.replaceWith(createDiv('content',updatedContent,'#334155'));
+        editBtn.innerText='✏️ تعديل'; cancelBtn.remove(); memoDiv.dataset.editing='false';
+        showMsg('✅ تم تعديل التعميم بنجاح'); populateCities();
+        editBtn.onclick = setupEdit;
+      };
+
+      cancelBtn.onclick = ()=>{
+        titleInput.replaceWith(createDiv('title',m.Title,color));
+        cityInput.replaceWith(createSpan('city',m.City));
+        contentTextarea.replaceWith(createDiv('content',m.Content,'#334155'));
+        editBtn.innerText='✏️ تعديل'; cancelBtn.remove(); memoDiv.dataset.editing='false';
+        editBtn.onclick = setupEdit;
+      };
+    }
+
+    editBtn.onclick = setupEdit;
+
+    deleteBtn.onclick=async()=>{
+      if(confirm('هل تريد حذف هذا التعميم؟')){
+        await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'delete',ID:m.ID})});
+        memoDiv.remove(); allMemos=allMemos.filter(item=>item.ID!==m.ID); populateCities();
+        showMsg('✅ تم حذف التعميم');
+      }
+    };
+
+    container.appendChild(memoDiv);
   });
 }
 
-// تعبئة المحافظات
-function populateCities() {
-  const select = $('#cityFilter');
-  select.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
-  const cities = [...new Set(allMemos.map(m => m.City))];
-  cities.forEach(c => {
-    const option = document.createElement('option');
-    option.value = c;
-    option.textContent = c;
-    select.appendChild(option);
-  });
+function createDiv(className,text,color=null){ const div=document.createElement('div'); div.className=className; div.textContent=text; if(color) div.style.color=color; return div; }
+function createSpan(className,text){ const span=document.createElement('span'); span.className=className; span.textContent=text; return span; }
+
+function populateCities(){
+  const select=$('#cityFilter');
+  select.querySelectorAll('option:not([value="all"])').forEach(o=>o.remove());
+  const cities=[...new Set(allMemos.map(m=>m.City))];
+  cities.forEach(c=>{ const option=document.createElement('option'); option.value=c; option.textContent=c; select.appendChild(option); });
 }
 
-// إضافة تعميم
-async function addMemo() {
+$('#cityFilter').addEventListener('change',e=>renderMemos(e.target.value));
+
+const showAddBtn = $('#showAddBtn');
+const newMemoForm = $('#newMemoForm');
+const addBtn = $('#addBtn');
+const cancelAdd = $('#cancelAdd');
+
+showAddBtn.onclick = ()=>{
+  showAddBtn.style.display='none';
+  newMemoForm.style.display='block';
+};
+
+cancelAdd.onclick = ()=>{
+  newMemoForm.style.display='none';
+  showAddBtn.style.display='block';
+  $('#title').value=''; $('#city').value=''; $('#content').value='';
+};
+
+addBtn.onclick = async ()=>{
   const title = $('#title').value.trim();
   const city = $('#city').value.trim();
   const content = $('#content').value.trim();
-  if (!title || !content || !city) { alert('الرجاء ملء جميع الحقول'); return; }
+  if(!title||!city||!content){ alert('الرجاء ملء جميع الحقول'); return; }
   const date = new Date().toLocaleDateString();
   const ID = Date.now();
-
-  $('#addBtn').disabled = true;
-  $('#addBtn').innerText = '⏳ جاري الإضافة...';
-  await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'add', ID, Title: title, City: city, Content: content, Date: date }) });
-  $('#title').value = ''; $('#city').value = ''; $('#content').value = '';
-  $('#addBtn').disabled = false;
-  $('#addBtn').innerText = '➕ إضافة التعميم';
-  fetchMemos();
-}
-
-// حفظ التعديل
-async function saveEdit() {
-  const title = $('#title').value.trim();
-  const city = $('#city').value.trim();
-  const content = $('#content').value.trim();
-  if (!title || !content || !city) { alert('الرجاء ملء جميع الحقول'); return; }
-  const date = new Date().toLocaleDateString();
-
-  $('#addBtn').disabled = true;
-  $('#addBtn').innerText = '💾 جاري الحفظ...';
-  await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'edit', ID: editingID, Title: title, City: city, Content: content, Date: date }) });
-
-  editingID = null;
-  $('#title').value = ''; $('#city').value = ''; $('#content').value = '';
-  $('#addBtn').disabled = false;
-  $('#addBtn').innerText = '➕ إضافة التعميم';
-  $('#addBtn').onclick = addMemo;
-  fetchMemos();
-}
-
-// تعديل
-function editMemo(ID, title, city, content) {
-  $('#title').value = decodeURIComponent(title);
-  $('#city').value = decodeURIComponent(city);
-  $('#content').value = decodeURIComponent(content);
-  editingID = ID;
-  $('#addBtn').innerText = '💾 حفظ التعديل';
-  $('#addBtn').onclick = saveEdit;
-}
-
-// حذف
-async function deleteMemo(ID) {
-  if (confirm('هل تريد حذف هذا التعميم؟')) {
-    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', ID }) });
-    fetchMemos();
-  }
-}
-
-// فلترة
-$('#cityFilter').addEventListener('change', e => renderMemos(e.target.value));
-$('#addBtn').onclick = addMemo;
+  addBtn.disabled=true; addBtn.innerText='⏳ جاري الإضافة...';
+  await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'add',ID,Title:title,City:city,Content:content,Date:date})});
+  $('#title').value=''; $('#city').value=''; $('#content').value='';
+  addBtn.disabled=false; addBtn.innerText='📤 نشر التعميم';
+  newMemoForm.style.display='none'; showAddBtn.style.display='block';
+  fetchMemos(); showMsg('✅ تم إضافة التعميم بنجاح');
+};
 
 fetchMemos();
 </script>
