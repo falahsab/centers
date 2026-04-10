@@ -249,16 +249,16 @@ function performSearch(query){
 
   const matches = rows.filter(r =>
     (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
-    (r.mobile && r.mobile.includes(k))
+    (r.mob && r.mob.includes(k))
   );
 
   if(matches.length){
     output.innerHTML = matches.map(s=>`
       <div class="result">
         <div class="name">👤 الاسم: ${s.name}</div>
-        <div class="info">📱 الجوال: ${s.mobile}</div>
-        <div class="info num">🔢 رقم الحوالة: ${s.Rnumber}</div>
-        <div class="info">💰 المبلغ: ${s.Tamount}</div>
+        <div class="info">📱 الجوال: ${s.mob}</div>
+        <div class="info num">🔢 رقم الحوالة: ${s.num}</div>
+        <div class="info">💰 المبلغ: ${s.deger}</div>
       </div>
     `).join("");
   } else {
@@ -287,4 +287,3 @@ loadData();
 
 </body>
 </html>
-
