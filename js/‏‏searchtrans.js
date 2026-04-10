@@ -51,9 +51,9 @@ function showResults(list) {
     res.innerHTML = list.map(s => 
       `<div class="student">
          <div class="name">👤 الاســــــــم: ${s.name}</div>
-         <div>📱 رقـم الجوال: ${s.mob}</div>
-         <div class="num">🔢 رقم الحوالة: ${s.num}</div>
-         <div>💰 المبــــــــــلغ: ${s.deger}</div>
+         <div>📱 رقـم الجوال: ${s.mobile}</div>
+         <div class="num">🔢 رقم الحوالة: ${s.Rnumber}</div>
+         <div>💰 المبــــــــــلغ: ${s.Tamount}</div>
        </div>`
     ).join("");
   } else {
