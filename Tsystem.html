@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>البحث والتعديل</title>
+
+<style>
+body {
+  font-family: Tahoma;
+  background: #f3f4f6;
+  padding: 20px;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 8px;
+  width: 250px;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.field {
+  margin-bottom: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>البحث في البيانات</h2>
+
+<div class="search-box">
+  <input type="text" id="search" placeholder="اكتب للبحث">
+  <button onclick="search()">بحث</button>
+</div>
+
+<div id="results"></div>
+
+<script>
+function search() {
+  let query = document.getElementById("search").value;
+
+  google.script.run.withSuccessHandler(showResults).searchData(query);
+}
+
+function showResults(data) {
+  let container = document.getElementById("results");
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    let card = document.createElement("div");
+    card.className = "card";
+
+    let inputs = "";
+
+    item.values.forEach((val, i) => {
+      inputs += `
+        <div class="field">
+          <input value="${val}" data-index="${i}">
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      ${inputs}
+      <button onclick="saveRow(this, ${item.index})">💾 حفظ</button>
+      <button onclick="colorRow(${item.index})">🎨 تلوين</button>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// حفظ
+function saveRow(btn, rowIndex) {
+  let card = btn.parentElement;
+  let inputs = card.querySelectorAll("input");
+
+  let newData = [];
+
+  inputs.forEach(input => {
+    newData.push(input.value);
+  });
+
+  google.script.run.withSuccessHandler(msg => {
+    alert(msg);
+  }).updateRow(rowIndex, newData);
+}
+
+// تلوين
+function colorRow(rowIndex) {
+  google.script.run.withSuccessHandler(msg => {
+    alert(msg);
+  }).colorRow(rowIndex);
+}
+</script>
+
+</body>
+</html>
