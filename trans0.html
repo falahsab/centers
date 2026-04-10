@@ -249,7 +249,7 @@ function performSearch(query){
 
   const matches = rows.filter(r =>
     (r.name && normalizeArabic(r.name).includes(normalizeArabic(k))) ||
-    (r.mob && r.mob.includes(k))
+    (r.mobile && r.mobile.includes(k))
   );
 
   if(matches.length){
