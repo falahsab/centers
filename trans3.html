@@ -275,14 +275,24 @@ button.colorBtn{
 }
 
 /* اسم الحقل */
+.label0{
+  color: #0f766e;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: 6px;
+}
 .label{
   color: #0f766e;
   font-weight: bold;
   font-size: 15px;
   margin-left: 6px;
 }
-
 /* القيمة */
+.value0{
+  color: #000675;
+  font-weight: bold;
+  font-size: 15px;
+}
 .value{
   color: #FF0000;
   font-weight: bold;
@@ -443,9 +453,20 @@ function performSearch(q){
 <div class="box-section">
   <div class="box-title">📦 بيانات القسيمة</div>
   <div class="grid-box">
-      <div class="grid-item">👤 الزوج: ${s.husband || "-"}</div>
-      <div class="grid-item">🕊️ الزوجة: ${s.Wife || "-"}</div>
-      <div class="grid-item">📱 الجوال: ${s.mob || "-"}</div>
+  <div class="grid-item">
+  <span class="label0">👤 الزوج:</span>
+  <span class="value0">${s.husband || "-"}</span>
+</div>
+<div class="grid-item">
+    <span class="label0">🕊️ الزوجة:</span>
+  <span class="value0">${s.Wife || "-"}</span>
+</div>
+ <div class="grid-item">
+    <span class="label0">📱 الجوال</span>
+  <span class="value0">${s.mob || "-"}</span>
+</div> 
+  
+
   </div>
 </div>
 
