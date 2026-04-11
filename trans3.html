@@ -245,12 +245,42 @@ button.colorBtn{
   font-size: 14px;
   color: #334155;
 }
-
+.grid-item1{
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 18px;
+  color: #FF0000;
+}
 /* للجوال عمود واحد */
 @media (max-width: 480px){
   .grid-box{
     grid-template-columns: 1fr;
   }
+}
+
+.grid-item0{
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* اسم الحقل */
+.label{
+  color: #0f766e;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: 6px;
+}
+
+/* القيمة */
+.value{
+  color: #FF0000;
+  font-weight: bold;
+  font-size: 18px;
 }
 </style>
 </head>
@@ -402,7 +432,8 @@ function performSearch(q){
 
   output.innerHTML = res.map(s=>`
     <div class="result">
-    
+
+      
 <div class="box-section">
   <div class="box-title">📦 بيانات القسيمة</div>
   <div class="grid-box">
@@ -415,9 +446,19 @@ function performSearch(q){
 <div class="box-section">
      <div class="box-title">📦 بيانات الحوالة</div>
      <div class="grid-box">
-    <div class="grid-item">💸 الحوالة: ${s.num || "-"}</div>
+     <div class="grid-item">👤 المستلم: ${s.name || "-"}</div> 
+<div class="grid-item">
+  <span class="label">💸 رقمها:</span>
+  <span class="value">${s.num || "-"}</span>
+</div>
+
     <div class="grid-item">⌛ الحالة: ${s.Status || "-"}</div>
-    <div class="grid-item">💰 المبلغ: ${s.deger || "-"}</div>
+    
+    <div class="grid-item">
+  <span class="label">💰 المبلغ:</span>
+  <span class="value">${s.deger || "-"}</span>
+</div>
+
   <div class="grid-item">📅 تاريخ الارسال: ${s.Date || "-"}</div>
   </div>
 </div>
@@ -429,6 +470,8 @@ function performSearch(q){
       <div class="grid-item">🚑 المشفى: ${s.Hospital || "-"}</div>
   </div>
 </div>
+
+
 
     </div>
   `).join("");
