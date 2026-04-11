@@ -147,9 +147,9 @@ h2 {
   transform: translateY(-3px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
-
+.name1 {  color: #800000; font-size: 17px; }
 .name { font-weight: bold; color: #0f766e; font-size: 18px; }
-.info.num { color: #0284c7 !important; font-weight: bold; font-size: 17px; }
+.info.num { font-weight: bold; color: #0284c7 !important; font-weight: bold; font-size: 18px; }
 .info { margin: 2px 0; color: #334155; }
 
 /* متجاوب للجوال */
@@ -278,10 +278,13 @@ function performSearch(q){
 
   output.innerHTML = res.map(s=>`
     <div class="result">
-      <div class="name">👤 ${s.name}</div>
-      <div class="info">📱 ${s.mob}</div>
-      <div class="info num">🔢 ${s.num}</div>
+<div class="name">👤 ${s.name}</div>
+
+<div class="info" onclick="copyText('${s.mob}')">📱 ${s.mob}</div>
+
+<div class="info num" onclick="copyText('${s.num}')">🔢 ${s.num}</div>
       <div class="info">💰 ${s.deger}</div>
+      <div class="name1">📌 الحالة: ${s.Status || "-"}</div>
 <button class="colorBtn" onclick="colorRow('${s.num}')">
 🎨 تلوين
 </button>
@@ -301,7 +304,7 @@ function colorRow(num){
   })
   .then(r => r.json())
   .then(res => {
-    if(res.success){
+    if(res.success){77
       showToast("تم التلوين 🎨");
     } else {
       alert("لم يتم العثور ❌");
@@ -321,6 +324,16 @@ function showToast(msg){
     toast.style.opacity = "0";
   }, 1500);
 }
+function copyText(text){
+
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("تم النسخ 📋");
+  }).catch(() => {
+    alert("فشل النسخ");
+  });
+
+}
+
 loadData();
 
 </script>
