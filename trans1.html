@@ -151,7 +151,7 @@ h2 {
 .name { font-weight: bold; color: #0f766e; font-size: 18px; }
 .info.num { font-weight: bold; color: #0284c7 !important; font-weight: bold; font-size: 18px; }
 .info { margin: 2px 0; color: #334155; }
-
+.Wife { font-weight: bold; color: #EE4B2B; font-size: 18px; }
 /* متجاوب للجوال */
 @media (max-width: 480px) {
   .container { padding: 15px;  }
@@ -279,7 +279,7 @@ function performSearch(q){
   output.innerHTML = res.map(s=>`
     <div class="result">
 <div class="name">👤 ${s.name}</div>
-
+<div class="Wife">🕊️  ${s.Wife}</div>
 <div class="info" onclick="copyText('${s.mob}')">📱 ${s.mob}</div>
 
 <div class="info num" onclick="copyText('${s.num}')">🔢 ${s.num}</div>
