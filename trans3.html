@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  max-width: 700px;
+  max-width:1000px;
   margin: auto;
   background: #ffffffcc;
   backdrop-filter: blur(8px);
@@ -213,7 +213,7 @@ button.colorBtn{
   border: 1px solid #10b981;
   border-radius: 12px;
   padding: 18px 12px 12px;
-  margin-top: 10px;
+  margin-top: 12px;
   background: #f9fffd;
 }
 
@@ -232,6 +232,12 @@ button.colorBtn{
 
 /* 🔥 شبكة البيانات */
 .grid-box{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.grid-box1{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
@@ -452,12 +458,12 @@ function performSearch(q){
   <span class="value">${s.num || "-"}</span>
 </div>
 
-    <div class="grid-item">⌛ الحالة: ${s.Status || "-"}</div>
-    
     <div class="grid-item">
   <span class="label">💰 المبلغ:</span>
   <span class="value">${s.deger || "-"}</span>
 </div>
+    <div class="grid-item">⌛ الحالة: ${s.Status || "-"}</div>
+    
 
   <div class="grid-item">📅 تاريخ الارسال: ${s.Date || "-"}</div>
   </div>
