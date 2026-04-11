@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بحث الحوالات</title>
+<style>
+body {
+  font-family: "Tajawal", sans-serif;
+  background: linear-gradient(180deg, #e0f7f4 0%, #f4fcfc 100%);
+  color: #1e293b;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffffcc;
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 25px;
+  position: relative;
+}
+
+h2 {
+  text-align: center;
+  color: #059669;
+  margin-bottom: 20px;
+}
+
+/* زر التحديث العائم */
+#refreshBtn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #06b6d4;
+  background: #ffffff;
+  color: #06b6d4;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+#refreshBtn:hover {
+  transform: scale(1.15);
+  background: #06b6d4;
+  color: #fff;
+}
+
+/* دوران عند الضغط */
+#refreshBtn.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* رسالة التحديث */
+#updateMsg {
+  position: fixed;
+  top: 15px;
+  left: 70px;
+  background: #0ea5e9;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* مربع البحث */
+.search-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 40px 12px 40px;
+  border-radius: 10px;
+  border: 1px solid #94e2cd;
+  font-size: 17px;
+  outline: none;
+  background: #f0fdf4;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 6px rgba(16,185,129,0.4);
+}
+
+.icon-search, .icon-clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.icon-search { right: 12px; color: #34d399; pointer-events: none; }
+.icon-clear { right: 12px; color: #6b7280; display: none; }
+.icon-clear:hover { color: #ef4444; }
+.icon-clear svg, .icon-search svg { width: 100%; height: 100%; fill: currentColor; }
+
+/* النتائج */
+#output {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* البطاقات */
+.result {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  width: 100%;
+  text-align: right;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border-left: 5px solid #10b981;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.result:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+.name1 {  color: #800000; font-size: 17px; }
+.name { font-weight: bold; color: #0f766e; font-size: 18px; }
+.info.num { font-weight: bold; color: #0284c7 !important; font-weight: bold; font-size: 18px; }
+.info { margin: 2px 0; color: #334155; }
+.Wife { font-weight: bold; color: #EE4B2B; font-size: 18px; }
+/* متجاوب للجوال */
+@media (max-width: 480px) {
+  .container { padding: 15px;  }
+  #refreshBtn { width: 40px; height: 40px; font-size: 16px; }
+  #updateMsg { font-size: 13px; left: 65px; padding: 5px 10px; }
+  .search-box input { font-size: 16px; padding: 10px 35px 10px 35px; }
+  .icon-search, .icon-clear { width: 16px; height: 16px; }
+  .result .name { font-size: 16px; }
+  .result .info.num { font-size: 16px; }
+  .result .info { font-size: 14px; }
+}
+button.colorBtn{
+  margin-top:10px;
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#f59e0b;
+  color:white;
+}
+.toast{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.85);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.search-box{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #f0fdf4cc;
+  backdrop-filter: blur(8px);
+  padding: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🩺 البحث عن حوالة مستفيد</h2>
+
+<div class="search-box">
+  <input type="text" id="search" placeholder="اكتب هنا...">
+
+  <span id="clearBtn" class="icon-clear">
+    ✖
+  </span>
+</div>
+
+  <div id="output">⏳ جارٍ تحميل البيانات...</div>
+
+  <button id="refreshBtn">↻</button>
+  <div id="updateMsg">✅ تم التحديث</div>
+</div>
+<div id="toastMsg" class="toast"></div>
+<script>
+
+const sheetId = "1QrQejijDXc_8WzzMVi7IvrWOuGpxXjLkUlleTGuj1NM";
+const sheetNames = ["Sheet1"];
+let rows = [];
+
+const search = document.getElementById("search");
+const output = document.getElementById("output");
+const refreshBtn = document.getElementById("refreshBtn");
+const updateMsg = document.getElementById("updateMsg");
+const clearBtn = document.getElementById("clearBtn");
+
+// إظهار/إخفاء زر المسح حسب الكتابة
+search.addEventListener("input", function () {
+  if (this.value.trim().length > 0) {
+    clearBtn.style.display = "block";
+  } else {
+    clearBtn.style.display = "none";
+  }
+});
+
+// عند الضغط على زر المسح
+clearBtn.addEventListener("click", function () {
+  search.value = "";
+  clearBtn.style.display = "none";
+  output.innerHTML = "";
+  search.focus();
+});
+// 🔥 بحث عربي احترافي (Google-level normalization)
+function normalizeText(str){
+  return (str || "")
+    .toLowerCase()
+
+    // إزالة التشكيل
+    .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g,"")
+
+    // توحيد الألف
+    .replace(/[أإآٱا]/g,"ا")
+
+    // توحيد الياء
+    .replace(/[يى]/g,"ي")
+
+    // توحيد الهاء
+    .replace(/ة/g,"ه")
+
+    // إزالة المد
+    .replace(/ـ/g,"")
+
+    // إزالة الرموز والمسافات
+    .replace(/[^a-z0-9\u0600-\u06FF]/g,"")
+
+    .trim();
+}
+
+// 🔥 تحميل البيانات من Google Sheets
+async function loadData(){
+  refreshBtn.classList.add("loading");
+  output.innerHTML = "⏳ جارٍ تحميل البيانات...";
+  rows = [];
+
+  try{
+    await Promise.all(sheetNames.map(async name=>{
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${name}`;
+      const res = await fetch(url);
+      const csv = await res.text();
+      const lines = csv.trim().split(/\r?\n/);
+
+      const headers = lines[0].replace(/"/g,"").split(",");
+
+      for(let i=1;i<lines.length;i++){
+        const values = lines[i].replace(/"/g,"").split(",");
+
+        let obj = {};
+        headers.forEach((h,j)=>{
+          obj[h] = (values[j] || "").replace(/"/g,"").trim();
+        });
+
+        obj.sheet = name;
+        rows.push(obj);
+      }
+    }));
+
+    output.innerHTML = `✅ تم تحميل ${rows.length} حوالة`;
+    showMsg();
+
+  }catch(e){
+    output.innerHTML = "❌ خطأ في تحميل البيانات";
+  }
+
+  refreshBtn.classList.remove("loading");
+}
+
+refreshBtn.onclick = loadData;
+
+// 🔥 رسالة التحديث
+function showMsg(){
+  updateMsg.style.opacity = 1;
+  setTimeout(()=>updateMsg.style.opacity = 0,2000);
+}
+
+// 🔥 بحث سريع مع debounce
+let timer;
+search.addEventListener("input", function(){
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    performSearch(this.value);
+  }, 250);
+});
+
+// 🔥 البحث الاحترافي
+function performSearch(q){
+  q = normalizeText(q);
+
+  if(!q){
+    output.innerHTML="";
+    return;
+  }
+
+  const res = [];
+
+  for(let i = 0; i < rows.length; i++){
+    const r = rows[i];
+
+    const name = normalizeText(r.name);
+    const mob = normalizeText(r.mob);
+
+    if(name.includes(q) || mob.includes(q)){
+      res.push(r);
+    }
+
+    if(res.length >= 50) break;
+  }
+
+  if(res.length === 0){
+    output.innerHTML = "❌ لا توجد نتائج";
+    return;
+  }
+
+  output.innerHTML = res.map(s=>`
+    <div class="result">
+      <div class="name">👤الــــزوج: ${s.name || "-"}</div>
+      <div class="Wife">🕊️الــزوجة: ${s.Wife || "-"}</div>
+
+      <div class="info">📱الموبايل: ${s.mob || "-"}</div>
+      <div class="info num">💸الحوالة: ${s.num || "-"}</div>
+
+      <div class="info">💰المبلغ: ${s.deger || "-"}</div>
+      <div class="name1">⌛ الحالة: ${s.Status || "-"}</div>
+      <div class="name1">📅 تاريخ الارسال: ${s.Date || "-"}</div>
+      <div class="name1">🗂️ المشروع: ${s.Project || "-"}</div>
+      <div class="name1">🚑 المشفى: ${s.Hospital || "-"}</div>
+    </div>
+  `).join("");
+}
+
+// 🔥 نسخ النص
+function showToast(msg){
+  const toast = document.getElementById("toastMsg");
+  toast.innerText = msg;
+  toast.style.opacity = "1";
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+  }, 1000);
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("تم النسخ 📋");
+  }).catch(() => {
+    alert("فشل النسخ");
+  });
+}
+
+loadData();
+
+</script>
+</body>
+</html>
