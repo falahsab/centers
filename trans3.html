@@ -463,7 +463,7 @@ function performSearch(q){
 </div>
  <div class="grid-item">
     <span class="label0">📱 الجوال</span>
-  <span class="value0">${s.mob || "-"}</span>
+  <span class="value0" onclick="copyText('${s.mob}')">${s.mob || "-"}</span>
 </div> 
   
 
@@ -475,8 +475,8 @@ function performSearch(q){
      <div class="grid-box">
      <div class="grid-item">👤 المستلم: ${s.name || "-"}</div> 
 <div class="grid-item">
-  <span class="label">💸 رقمها:</span>
-  <span class="value">${s.num || "-"}</span>
+  <span class="label" >💸 رقمها:</span>
+  <span class="value" onclick="copyText('${s.num}')">${s.num || "-"}</span>
 </div>
 
     <div class="grid-item">
