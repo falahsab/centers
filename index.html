@@ -77,6 +77,26 @@
       font-size: 15px;
     }
   }
+  .footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #aaa;
+  position: relative;
+}
+
+.footer span {
+  color: #ff0000;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; text-shadow: 0 0 5px rgba(255,0,0,0.4); }
+  50% { opacity: 1; text-shadow: 0 0 15px rgba(255,0,0,0.9); }
+  100% { opacity: 0.6; text-shadow: 0 0 5px rgba(255,0,0,0.4); }
+}
 </style>
 </head>
 
@@ -95,7 +115,9 @@
     <iframe src="trans3.html" style="display:none"></iframe>
     <iframe src="memos.html" style="display:none"></iframe>
   </div>
-
+<footer class="footer">
+  صُمم بكل <span>حب ❤️ </span>بواسطة فؤاد الاحصب
+</footer>
   <script>
     const tabs = document.querySelectorAll('.tab');
     const iframes = document.querySelectorAll('#content iframe');
