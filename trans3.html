@@ -473,29 +473,50 @@ function performSearch(q){
 <div class="box-section">
      <div class="box-title">📦 بيانات الحوالة</div>
      <div class="grid-box">
-     <div class="grid-item">👤 المستلم: ${s.name || "-"}</div> 
+     
+<div class="grid-item">
+  <span class="label" >👤 المستلم:</span>
+  <span class="value0" >${s.name  || "-"}</span>
+</div>
+     
 <div class="grid-item">
   <span class="label" >💸 رقمها:</span>
   <span class="value" onclick="copyText('${s.num}')">${s.num || "-"}</span>
 </div>
 
-    <div class="grid-item">
+<div class="grid-item">
   <span class="label">💰 المبلغ:</span>
   <span class="value">${s.deger || "-"}</span>
 </div>
-    <div class="grid-item">⌛ الحالة: ${s.Status || "-"}</div>
-    
 
-  <div class="grid-item">📅 تاريخ الارسال: ${s.Date || "-"}</div>
+<div class="grid-item">
+  <span class="label" >⌛ الحالة:</span>
+  <span class="value0" >${s.Status  || "-"}</span>
+</div>
+          
+<div class="grid-item">
+  <span class="label" >📅 تاريخ الارسال:</span>
+  <span class="value0" >${s.Date  || "-"}</span>
+</div>
+  
   </div>
 </div>
 
 <div class="box-section">
   <div class="box-title">📦 المشروع والمشفى</div>
+  
   <div class="grid-box">
-      <div class="grid-item">🗂️ المشروع: ${s.Project || "-"}</div>
-      <div class="grid-item">🚑 المشفى: ${s.Hospital || "-"}</div>
+  <div class="grid-item">
+  <span class="label" >🗂️ المشروع</span>
+  <span class="value0" >${s.Project || "-"}</span>
+</div>
+ <div class="grid-item">
+  <span class="label" >🚑 المشفى:</span>
+  <span class="value0" >${s.Hospital  || "-"}</span>
+</div> 
+
   </div>
+  
 </div>
 
 
