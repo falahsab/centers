@@ -563,7 +563,7 @@ function showToast(msg){
 function copyText(text){
   navigator.clipboard.writeText(text).then(()=>{
     const shortText = text.length > 30 ? text.substring(0, 30) + "..." : text;
-    showToast("📋تم نسخ: " + 7124228967);
+    showToast("📋تم نسخ: " + shortText);
   }).catch(()=>{
     alert("فشل النسخ");
   });
