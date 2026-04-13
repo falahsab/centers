@@ -122,6 +122,8 @@ h2 {
 .icon-clear:hover { color: #ef4444; }
 .icon-clear svg, .icon-search svg { width: 100%; height: 100%; fill: currentColor; }
 
+
+
 /* النتائج */
 #output {
   display: flex;
@@ -298,6 +300,14 @@ button.colorBtn{
   font-weight: bold;
   font-size: 18px;
 }
+.footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #aaa;
+  position: relative;
+}
+
 .footer span {
   color: #ff0000;
   font-weight: bold;
@@ -309,7 +319,7 @@ button.colorBtn{
   0% { opacity: 0.6; text-shadow: 0 0 5px rgba(255,0,0,0.4); }
   50% { opacity: 1; text-shadow: 0 0 15px rgba(255,0,0,0.9); }
   100% { opacity: 0.6; text-shadow: 0 0 5px rgba(255,0,0,0.4); }
-}  
+}
 </style>
 </head>
 
@@ -319,6 +329,7 @@ button.colorBtn{
   <h2>🩺 البحث عن حوالة مستفيد</h2>
 
 <div class="search-box">
+
   <input type="text" id="search" placeholder="ابحث باسم الزوجة او الزوج او الرقم...">
 
   <span id="clearBtn" class="icon-clear">
@@ -327,11 +338,9 @@ button.colorBtn{
 </div>
 
   <div id="output">⏳ جارٍ تحميل البيانات...</div>
-  
 <footer class="footer">
   صُمم بكل <span>حب ❤️ </span>بواسطة فؤاد الاحصب
 </footer>
-  
   <button id="refreshBtn">↻</button>
   <div id="updateMsg">✅ تم التحديث</div>
 </div>
@@ -478,7 +487,7 @@ function performSearch(q){
   <span class="value0">${s.Wife || "-"}</span>
 </div>
  <div class="grid-item">
-    <span class="label0">📱 الجوال</span>
+    <span class="label0">📱 الجوال:</span>
   <span class="value0" onclick="copyText('${s.mob}')">${s.mob || "-"}</span>
 </div> 
   
@@ -550,7 +559,17 @@ function showToast(msg){
   setTimeout(()=>toast.style.opacity="0",1000);
 }
 
+
 function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const shortText = text.length > 30 ? text.substring(0, 30) + "..." : text;
+    showToast("📋تم نسخ: " + 7124228967);
+  }).catch(()=>{
+    alert("فشل النسخ");
+  });
+}
+
+function copy1Text(text){
   navigator.clipboard.writeText(text).then(()=>{
     showToast("تم النسخ 📋");
   }).catch(()=>{
