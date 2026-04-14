@@ -307,7 +307,20 @@ button.colorBtn{
   color: #aaa;
   position: relative;
 }
+.icon-paste {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: #06b6d4;
+}
 
+.icon-paste:hover {
+  color: #10b981;
+}
 </style>
 </head>
 
@@ -319,7 +332,7 @@ button.colorBtn{
 <div class="search-box">
 
   <input type="text" id="search" placeholder="ابحث باسم الزوجة او الزوج او الرقم...">
-
+<span id="pasteBtn" class="icon-paste">📋</span>
   <span id="clearBtn" class="icon-clear">
     ✖
   </span>
@@ -539,6 +552,7 @@ function performSearch(q){
 // 🔥 نسخ النص
 function showToast(msg){
   const toast = document.getElementById("toastMsg");
+  const pasteBtn = document.getElementById("pasteBtn");
   toast.innerText = msg;
   toast.style.opacity = "1";
 
@@ -562,7 +576,24 @@ function copy1Text(text){
     alert("فشل النسخ");
   });
 }
+pasteBtn.addEventListener("click", async () => {
+  try {
+    const text = await navigator.clipboard.readText();
 
+    if (text) {
+      // 🔥 حذف القديم + لصق الجديد
+      search.value = "";
+      search.value = text;
+
+      clearBtn.style.display = "block";
+      performSearch(text);
+      showToast("📥 تم اللصق");
+    }
+
+  } catch (e) {
+    console.log("Clipboard blocked");
+  }
+});
 loadData();
 
 </script>
